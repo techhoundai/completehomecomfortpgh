@@ -1473,6 +1473,22 @@ ul { list-style: none; }
   color: #FFFFFF;
 }
 
+.footer-credit {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #555555;
+}
+
+.footer-credit a {
+  color: #777777;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-credit a:hover {
+  color: #FFFFFF;
+}
+
 /* ===== SCROLL ANIMATIONS ===== */
 .fade-in {
   opacity: 0;
