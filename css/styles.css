@@ -1446,6 +1446,10 @@ ul { list-style: none; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.08);
   padding: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   text-align: center;
 }
 
@@ -1456,25 +1460,16 @@ ul { list-style: none; }
 }
 
 .footer-armstrong {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255,255,255,0.05);
-  border-radius: 8px;
   color: #999999;
-  font-size: 0.85rem;
-  transition: all 0.2s;
+  font-size: 0.8rem;
+  transition: color 0.2s;
 }
 
 .footer-armstrong:hover {
-  background: rgba(255,255,255,0.1);
   color: #FFFFFF;
 }
 
 .footer-credit {
-  margin-top: 1rem;
   font-size: 0.75rem;
   color: #555555;
 }
@@ -1583,6 +1578,13 @@ ul { list-style: none; }
   }
 
   .section { padding: 5rem 0; }
+
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
 }
 
 /* ===== RESPONSIVE: DESKTOP ===== */
