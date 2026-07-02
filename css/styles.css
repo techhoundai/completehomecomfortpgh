@@ -1459,16 +1459,6 @@ ul { list-style: none; }
   margin-bottom: 0;
 }
 
-.footer-armstrong {
-  color: #999999;
-  font-size: 0.8rem;
-  transition: color 0.2s;
-}
-
-.footer-armstrong:hover {
-  color: #FFFFFF;
-}
-
 .footer-credit {
   font-size: 0.75rem;
   color: #555555;
