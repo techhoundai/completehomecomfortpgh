@@ -12,20 +12,6 @@ questions
 
 
     feedback
-    - get a free estimate - make apply for financing
     - replace background image on front - get images from ethan
     - replace some gallery images - get images from ethan
     - redo tax credit page
-    - fix mobile responsiveness
-
-
-
-    b5a82aff-37df-4eda-81cc-4a23017012d9
-
-    <form action="https://api.web3forms.com/submit" method="POST">
-  <input type="hidden" name="access_key" value="b5a82aff-37df-4eda-81cc-4a23017012d9">
-  <input type="text" name="name" required>
-  <input type="email" name="email" required>
-  <textarea name="message" required></textarea>
-  <button type="submit">Submit</button>
-</form>
