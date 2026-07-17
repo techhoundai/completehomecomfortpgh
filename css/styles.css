@@ -303,20 +303,20 @@ ul { list-style: none; }
 /* ===== HERO SECTION ===== */
 .hero {
   position: relative;
-  background: var(--header-bg-deep) url('../media/background.png') center / cover no-repeat;
+  background: var(--header-bg-deep) url('../media/background5.png') center / cover no-repeat;
   color: #FFFFFF;
-  padding: 4rem 0 3rem;
+  padding: 3rem 0 8rem;
   overflow: hidden;
   min-height: 60vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(15, 26, 42, 0.8);
+  background: linear-gradient(to bottom, rgba(15, 26, 42, 0.85) 0%, rgba(15, 26, 42, 0.5) 70%, rgba(15, 26, 42, 0.3) 100%);
   pointer-events: none;
 }
 
