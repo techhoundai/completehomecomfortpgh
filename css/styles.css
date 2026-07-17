@@ -303,7 +303,7 @@ ul { list-style: none; }
 /* ===== HERO SECTION ===== */
 .hero {
   position: relative;
-  background: var(--header-bg-deep) url('../media/background5.png') center / cover no-repeat;
+  background: var(--header-bg-deep) url('../media/background.png') center / cover no-repeat;
   color: #FFFFFF;
   padding: 3rem 0 8rem;
   overflow: hidden;
@@ -1266,77 +1266,6 @@ ul { list-style: none; }
   margin-bottom: 0;
 }
 
-/* ===== TAX CREDITS PAGE ===== */
-.tax-credits-intro {
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-
-.tax-credits-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 2rem 0;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--card-border);
-}
-
-.tax-credits-table th,
-.tax-credits-table td {
-  padding: 1rem 1.25rem;
-  text-align: left;
-  border-bottom: 1px solid var(--card-border);
-}
-
-.tax-credits-table th {
-  background: var(--header-bg);
-  color: #fff;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.tax-credits-table tr:last-child td {
-  border-bottom: none;
-}
-
-.tax-credits-table tr:nth-child(even) td {
-  background: var(--bg-secondary);
-}
-
-.tax-credits-steps {
-  counter-reset: step;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-.tax-credits-step {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-}
-
-.tax-credits-step-num {
-  counter-increment: step;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--chc-blue);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.tax-credits-step-content h4 {
-  margin-bottom: 0.25rem;
-}
-
 /* ===== FOOTER ===== */
 .footer {
   background: var(--footer-bg);
@@ -1554,8 +1483,6 @@ ul { list-style: none; }
   .review-platforms { grid-template-columns: repeat(2, 1fr); }
 
   .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .tax-credits-steps { grid-template-columns: repeat(2, 1fr); }
 
   .cta-buttons {
     flex-direction: row;
