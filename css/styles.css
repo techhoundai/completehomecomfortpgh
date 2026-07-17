@@ -1534,11 +1534,6 @@ ul { list-style: none; }
 
   .hero { padding: 5rem 0 4rem; }
 
-  .hero-buttons {
-    flex-direction: row;
-    justify-content: center;
-  }
-
   .card-grid { grid-template-columns: repeat(2, 1fr); }
 
   .features-grid { grid-template-columns: repeat(2, 1fr); }
