@@ -122,14 +122,16 @@ async function main() {
     process.exit(0);
   }
 
-  const newReviews = [];
+  const existingById = new Map(existing.reviews.map(r => [r.id, r]));
+  let added = 0;
+  let removed = 0;
+
   for (const review of data.reviews) {
     if (!review.authorAttribution?.displayName || !review.rating) {
       await fail('malformed_review', 'API returned a review missing required fields', {
         review: JSON.stringify(review).slice(0, 500)
       });
     }
-    if (review.rating < 5) continue;
 
     if (!review.name) {
       await fail('missing_review_id', 'API returned a review without a resource name', {
@@ -137,40 +139,36 @@ async function main() {
       });
     }
 
-    newReviews.push({
+    const parsed = {
       id: review.name,
       authorName: review.authorAttribution.displayName,
-      authorProfileUrl: review.authorAttribution.uri,
-      authorPhotoUrl: review.authorAttribution.photoUri,
-      rating: review.rating,
       text: review.text?.text || review.originalText?.text,
       publishTime: review.publishTime
-    });
-  }
+    };
 
-  const existingIds = new Set(existing.reviews.map(r => r.id));
-  let added = 0;
-  for (const review of newReviews) {
-    if (!existingIds.has(review.id)) {
-      existing.reviews.push(review);
-      existingIds.add(review.id);
+    if (review.rating < 5) {
+      if (existingById.has(review.name)) {
+        existingById.delete(review.name);
+        removed++;
+      }
+      continue;
+    }
+
+    if (existingById.has(review.name)) {
+      existingById.set(review.name, parsed);
+    } else {
+      existingById.set(review.name, parsed);
       added++;
     }
   }
 
-  existing.reviews.sort((a, b) => (b.publishTime || '').localeCompare(a.publishTime || ''));
-  existing.reviews = existing.reviews.slice(0, MAX_REVIEWS);
-
-  const ratings = existing.reviews.map(r => r.rating);
-  const avgRating = ratings.length > 0
-    ? Math.round((ratings.reduce((sum, r) => sum + r, 0) / ratings.length) * 10) / 10
-    : 0;
+  const reviews = Array.from(existingById.values());
+  reviews.sort((a, b) => (b.publishTime || '').localeCompare(a.publishTime || ''));
+  const capped = reviews.slice(0, MAX_REVIEWS);
 
   const output = {
     lastUpdated: new Date().toISOString(),
-    averageRating: avgRating,
-    totalReviewCount: existing.reviews.length,
-    reviews: existing.reviews
+    reviews: capped
   };
 
   try {
@@ -184,7 +182,7 @@ async function main() {
     });
   }
 
-  console.log(`Wrote ${existing.reviews.length} reviews (${added} new). Average rating: ${avgRating}`);
+  console.log(`Wrote ${capped.length} reviews (${added} new, ${removed} removed).`);
 }
 
 main().catch(async (err) => {

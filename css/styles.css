@@ -1270,12 +1270,13 @@ ul { list-style: none; }
 
 /* ===== TESTIMONIAL CARDS ===== */
 .testimonial-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  columns: 1;
+  column-gap: 1.5rem;
 }
 
 .testimonial-card {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 16px;
@@ -1545,7 +1546,7 @@ ul { list-style: none; }
 
   .review-platforms { grid-template-columns: repeat(2, 1fr); }
 
-  .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonial-grid { columns: 2; }
 
   .cta-buttons {
     flex-direction: row;

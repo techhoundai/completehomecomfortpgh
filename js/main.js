@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         reviewsGrid.innerHTML = data.reviews.map(review => {
           const initials = getInitials(review.authorName);
-          const stars = '<i class="fas fa-star"></i>'.repeat(Math.min(Math.max(Math.round(review.rating), 0), 5));
+          const stars = '<i class="fas fa-star"></i>'.repeat(5);
           const text = escapeHtml(review.text)
             .split(/\n\n+/)
             .map(p => `<p>${p.trim()}</p>`)
@@ -235,22 +235,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function injectReviewSchema(data) {
+    const count = data.reviews.length.toString();
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'HVACBusiness',
       '@id': 'https://completehomecomfortpgh.com/#organization',
       aggregateRating: {
         '@type': 'AggregateRating',
-        ratingValue: data.averageRating.toString(),
+        ratingValue: '5.0',
         bestRating: '5',
         worstRating: '1',
-        ratingCount: data.totalReviewCount.toString(),
-        reviewCount: data.totalReviewCount.toString()
+        ratingCount: count,
+        reviewCount: count
       },
       review: data.reviews.map(r => ({
         '@type': 'Review',
         author: { '@type': 'Person', name: r.authorName },
-        reviewRating: { '@type': 'Rating', ratingValue: r.rating.toString(), bestRating: '5' },
+        reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
         reviewBody: r.text
       }))
     };
