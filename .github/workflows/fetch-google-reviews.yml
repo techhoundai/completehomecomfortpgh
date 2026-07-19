@@ -1,4 +1,4 @@
-name: Fetch Google Reviews
+name: fetch-google-reviews
 
 on:
   schedule:
