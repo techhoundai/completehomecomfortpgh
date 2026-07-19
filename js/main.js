@@ -198,4 +198,79 @@ document.addEventListener('DOMContentLoaded', () => {
     lastScroll = currentScroll;
   }, { passive: true });
 
+  // Dynamic Google Reviews
+  const reviewsGrid = document.getElementById('reviews-grid');
+  if (reviewsGrid) {
+    fetch('/data/reviews.json')
+      .then(res => {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
+      .then(data => {
+        if (!data.reviews || data.reviews.length === 0) return;
+
+        reviewsGrid.innerHTML = data.reviews.map(review => {
+          const initials = getInitials(review.authorName);
+          const stars = '<i class="fas fa-star"></i>'.repeat(Math.min(Math.max(Math.round(review.rating), 0), 5));
+          const text = escapeHtml(review.text)
+            .split(/\n\n+/)
+            .map(p => `<p>${p.trim()}</p>`)
+            .join('');
+
+          return `<div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">${initials}</div>
+              <div class="testimonial-meta">
+                <h4>${escapeHtml(review.authorName)}</h4>
+                <div class="testimonial-stars">${stars}</div>
+              </div>
+            </div>
+            <div class="testimonial-text">${text}</div>
+          </div>`;
+        }).join('');
+
+        injectReviewSchema(data);
+      })
+      .catch(err => console.error('Failed to load reviews:', err));
+  }
+
+  function injectReviewSchema(data) {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'HVACBusiness',
+      '@id': 'https://completehomecomfortpgh.com/#organization',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: data.averageRating.toString(),
+        bestRating: '5',
+        worstRating: '1',
+        ratingCount: data.totalReviewCount.toString(),
+        reviewCount: data.totalReviewCount.toString()
+      },
+      review: data.reviews.map(r => ({
+        '@type': 'Review',
+        author: { '@type': 'Person', name: r.authorName },
+        reviewRating: { '@type': 'Rating', ratingValue: r.rating.toString(), bestRating: '5' },
+        reviewBody: r.text
+      }))
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
+
+  function getInitials(name) {
+    if (!name) return '?';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0][0].toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
 });
