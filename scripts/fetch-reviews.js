@@ -7,6 +7,9 @@ const WEBHOOK_URL = 'https://bothound-api-908333870065.us-central1.run.app/v1/we
 
 async function notifyError(step, message, details = {}) {
   console.error(`[${step}] ${message}`);
+  if (Object.keys(details).length > 0) {
+    console.error('Details:', JSON.stringify(details, null, 2));
+  }
 
   const secret = process.env.BOTHOUND_WEBHOOK_SECRET;
   if (!secret) {
