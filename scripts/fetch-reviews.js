@@ -93,6 +93,8 @@ async function main() {
   } catch (err) {
     await fail('api_request', 'Network error calling Google Places API', {
       error: err.message,
+      cause: err.cause?.message || err.cause?.code || String(err.cause || ''),
+      stack: err.stack,
       placeId
     });
   }
