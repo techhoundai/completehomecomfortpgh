@@ -888,6 +888,15 @@ ul { list-style: none; }
   color: var(--text-heading);
 }
 
+.reviews-count a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.reviews-count a:hover {
+  text-decoration: underline;
+}
+
 .reviews-count span {
   color: var(--chc-blue);
 }

@@ -139,10 +139,24 @@ async function main() {
       });
     }
 
+    if (!review.text?.text) {
+      await fail('missing_review_text', 'API returned a review without text content', {
+        author: review.authorAttribution.displayName,
+        id: review.name
+      });
+    }
+
+    if (!review.publishTime) {
+      await fail('missing_publish_time', 'API returned a review without a publish time', {
+        author: review.authorAttribution.displayName,
+        id: review.name
+      });
+    }
+
     const parsed = {
       id: review.name,
       authorName: review.authorAttribution.displayName,
-      text: review.text?.text || review.originalText?.text,
+      text: review.text.text,
       publishTime: review.publishTime
     };
 
@@ -163,8 +177,13 @@ async function main() {
   }
 
   const reviews = Array.from(existingById.values());
-  reviews.sort((a, b) => (b.publishTime || '').localeCompare(a.publishTime || ''));
+  reviews.sort((a, b) => b.publishTime.localeCompare(a.publishTime));
   const capped = reviews.slice(0, MAX_REVIEWS);
+
+  if (JSON.stringify(existing.reviews) === JSON.stringify(capped)) {
+    console.log('No changes to reviews. Skipping write.');
+    process.exit(0);
+  }
 
   const output = {
     lastUpdated: new Date().toISOString(),
