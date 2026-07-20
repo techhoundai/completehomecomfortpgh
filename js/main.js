@@ -217,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(p => `<p>${p.trim()}</p>`)
             .join('');
 
+          const timeAgo = review.publishTime ? relativeTime(review.publishTime) : '';
+
           return `<div class="testimonial-card">
             <div class="testimonial-header">
               <div class="testimonial-avatar">${initials}</div>
@@ -226,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             </div>
             <div class="testimonial-text">${text}</div>
+            ${timeAgo ? `<div class="testimonial-date">${timeAgo}</div>` : ''}
           </div>`;
         }).join('');
 
@@ -266,6 +269,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0][0].toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function relativeTime(iso) {
+    const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+    const intervals = [
+      [31536000, 'year'],
+      [2592000, 'month'],
+      [604800, 'week'],
+      [86400, 'day']
+    ];
+    for (const [secs, label] of intervals) {
+      const count = Math.floor(seconds / secs);
+      if (count >= 1) return `${count} ${label}${count > 1 ? 's' : ''} ago`;
+    }
+    return 'Just now';
   }
 
   function escapeHtml(str) {

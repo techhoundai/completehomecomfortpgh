@@ -1339,6 +1339,12 @@ ul { list-style: none; }
   margin-bottom: 0;
 }
 
+.testimonial-date {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
 /* ===== FOOTER ===== */
 .footer {
   background: var(--footer-bg);
