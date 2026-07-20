@@ -1339,8 +1339,13 @@ ul { list-style: none; }
   margin-bottom: 0;
 }
 
+.testimonial-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .testimonial-date {
-  margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--text-light);
 }

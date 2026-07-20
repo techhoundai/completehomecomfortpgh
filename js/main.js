@@ -224,11 +224,13 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="testimonial-avatar">${initials}</div>
               <div class="testimonial-meta">
                 <h4>${escapeHtml(review.authorName)}</h4>
-                <div class="testimonial-stars">${stars}</div>
+                <div class="testimonial-stars-row">
+                  <div class="testimonial-stars">${stars}</div>
+                  ${timeAgo ? `<span class="testimonial-date">${timeAgo}</span>` : ''}
+                </div>
               </div>
             </div>
             <div class="testimonial-text">${text}</div>
-            ${timeAgo ? `<div class="testimonial-date">${timeAgo}</div>` : ''}
           </div>`;
         }).join('');
 
