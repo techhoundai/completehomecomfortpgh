@@ -84,7 +84,7 @@ async function main() {
 
   let response;
   try {
-    response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+    response = await fetch(`https://places.googleapis.com/v1/places/${placeId}?reviewsSort=NEWEST`, {
       headers: {
         'X-Goog-Api-Key': apiKey,
         'X-Goog-FieldMask': 'reviews'
