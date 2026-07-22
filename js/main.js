@@ -80,24 +80,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
+    let lightboxVideo = null;
     let currentIndex = 0;
 
     function getGalleryItems() {
       return document.querySelectorAll('.gallery-item');
     }
 
+    function showMedia(item) {
+      const videoSrc = item.dataset.video;
+      if (videoSrc) {
+        lightboxImg.style.display = 'none';
+        if (!lightboxVideo) {
+          lightboxVideo = document.createElement('video');
+          lightboxVideo.controls = true;
+          lightboxVideo.playsInline = true;
+          lightboxVideo.className = 'lightbox-video';
+          lightboxImg.parentNode.insertBefore(lightboxVideo, lightboxImg);
+        }
+        lightboxVideo.src = videoSrc;
+        lightboxVideo.style.display = '';
+        lightboxVideo.play().catch(() => {});
+      } else {
+        if (lightboxVideo) {
+          lightboxVideo.pause();
+          lightboxVideo.style.display = 'none';
+        }
+        const img = item.querySelector('img');
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.style.display = '';
+      }
+    }
+
     function openLightbox(index) {
       const items = getGalleryItems();
       if (index < 0 || index >= items.length) return;
       currentIndex = index;
-      const img = items[index].querySelector('img');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      showMedia(items[index]);
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
+      if (lightboxVideo) lightboxVideo.pause();
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
     }
@@ -108,9 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentIndex += direction;
       if (currentIndex < 0) currentIndex = items.length - 1;
       if (currentIndex >= items.length) currentIndex = 0;
-      const img = items[currentIndex].querySelector('img');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      showMedia(items[currentIndex]);
     }
 
     document.addEventListener('click', (e) => {
@@ -265,9 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.innerHTML = items.map(img => {
       const alt = escapeHtml(img.alt || 'HVAC project');
-      return `<div class="gallery-item fade-in">
+      const isVideo = img.type === 'video' && img.videoFilename;
+      const videoAttr = isVideo ? ` data-video="${pathPrefix}${escapeHtml(img.videoFilename)}"` : '';
+      const playIcon = isVideo ? '<div class="gallery-play-icon"><i class="fas fa-play"></i></div>' : '';
+      return `<div class="gallery-item fade-in"${videoAttr}>
         <img src="${pathPrefix}${escapeHtml(img.filename)}" alt="${alt}" loading="lazy">
         <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+        ${playIcon}
       </div>`;
     }).join('');
 

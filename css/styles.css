@@ -746,6 +746,35 @@ ul { list-style: none; }
 
 .gallery-item:hover .gallery-overlay { opacity: 1; }
 
+.gallery-play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gallery-play-icon i {
+  color: #FFFFFF;
+  font-size: 1.4rem;
+  background: rgba(0,0,0,0.55);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.gallery-item:hover .gallery-play-icon i {
+  transform: scale(1.1);
+  background: rgba(0,0,0,0.7);
+}
+
 .gallery-overlay i {
   color: #FFFFFF;
   font-size: 2rem;
@@ -774,7 +803,8 @@ ul { list-style: none; }
   display: flex;
 }
 
-.lightbox img {
+.lightbox img,
+.lightbox-video {
   max-width: 90vw;
   max-height: 85vh;
   object-fit: contain;

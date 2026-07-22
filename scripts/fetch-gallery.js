@@ -62,7 +62,7 @@ async function fail(step, message, details = {}) {
   process.exit(1);
 }
 
-function slugify(caption, id) {
+function slugify(caption, id, ext = 'webp') {
   const slug = caption
     .replace(/#\w+/g, '')
     .replace(/[^a-zA-Z0-9\s-]/g, '')
@@ -71,7 +71,7 @@ function slugify(caption, id) {
     .toLowerCase()
     .slice(0, 60)
     .replace(/-+$/, '');
-  return slug ? `${slug}-${id}.webp` : `project-${id}.webp`;
+  return slug ? `${slug}-${id}.${ext}` : `project-${id}.${ext}`;
 }
 
 function deriveAltText(caption) {
@@ -98,6 +98,13 @@ async function downloadImage(url, destPath) {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const buffer = Buffer.from(await res.arrayBuffer());
   await optimizeAndSave(buffer, destPath);
+}
+
+async function downloadVideo(url, destPath) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const buffer = Buffer.from(await res.arrayBuffer());
+  await fs.writeFile(destPath, buffer);
 }
 
 async function main() {
@@ -173,14 +180,13 @@ async function main() {
   console.log(`Fetched ${posts.length} posts from Instagram.`);
 
   const matchingPosts = posts.filter(post => {
-    if (post.type === 'Video') return false;
     const tags = (post.hashtags || []).map(t => t.toLowerCase());
     return tags.includes(FILTER_HASHTAG);
   });
 
-  console.log(`${matchingPosts.length} posts match #${FILTER_HASHTAG} (after filtering videos).`);
+  console.log(`${matchingPosts.length} posts match #${FILTER_HASHTAG} (${posts.length} total).`);
 
-  const imageEntries = [];
+  const entries = [];
   for (const post of matchingPosts) {
     if (!post.shortCode) {
       await fail('missing_shortcode', 'API returned a post without a shortCode', {
@@ -199,50 +205,72 @@ async function main() {
 
     if (post.type === 'Sidecar' && Array.isArray(post.childPosts)) {
       post.childPosts.forEach((child, i) => {
-        if (child.type === 'Video') return;
         const id = `${post.shortCode}-${i}`;
-        imageEntries.push({
+        const isVideo = child.type === 'Video';
+        const entry = {
           id,
           displayUrl: child.displayUrl,
           caption, alt,
           filename: slugify(caption, id),
+          type: isVideo ? 'video' : 'image',
           instagramUrl,
           timestamp: post.timestamp
-        });
+        };
+        if (isVideo) {
+          entry.videoUrl = child.videoUrl;
+          entry.videoFilename = slugify(caption, id, 'mp4');
+        }
+        entries.push(entry);
       });
     } else {
-      imageEntries.push({
+      const isVideo = post.type === 'Video';
+      const entry = {
         id: post.shortCode,
         displayUrl: post.displayUrl,
         caption, alt,
         filename: slugify(caption, post.shortCode),
+        type: isVideo ? 'video' : 'image',
         instagramUrl,
         timestamp: post.timestamp
-      });
+      };
+      if (isVideo) {
+        entry.videoUrl = post.videoUrl;
+        entry.videoFilename = slugify(caption, post.shortCode, 'mp4');
+      }
+      entries.push(entry);
     }
   }
 
-  console.log(`${imageEntries.length} total images (including carousel slides).`);
+  const videoCount = entries.filter(e => e.type === 'video').length;
+  const imageCount = entries.length - videoCount;
+  console.log(`${entries.length} total items (${imageCount} images, ${videoCount} videos, including carousel slides).`);
 
-  if (imageEntries.length === 0 && existing.images.length === 0) {
-    console.log('No matching images found and no existing gallery. Nothing to do.');
+  if (entries.length === 0 && existing.images.length === 0) {
+    console.log('No matching posts found and no existing gallery. Nothing to do.');
     process.exit(0);
   }
 
   const existingById = new Map(existing.images.map(img => [img.id, img]));
-  const freshIds = new Set(imageEntries.map(e => e.id));
+  const freshIds = new Set(entries.map(e => e.id));
   let added = 0;
   let updated = 0;
   let removed = 0;
 
   for (const [id, img] of existingById) {
     if (!freshIds.has(id)) {
-      const filepath = path.join(GALLERY_DIR, img.filename);
       try {
-        await fs.unlink(filepath);
+        await fs.unlink(path.join(GALLERY_DIR, img.filename));
       } catch (e) {
         if (e.code !== 'ENOENT') console.warn(`Could not delete ${img.filename}: ${e.message}`);
       }
+      if (img.videoFilename) {
+        try {
+          await fs.unlink(path.join(GALLERY_DIR, img.videoFilename));
+        } catch (e) {
+          if (e.code !== 'ENOENT') console.warn(`Could not delete ${img.videoFilename}: ${e.message}`);
+        }
+      }
+      console.log(`  - Removed: ${img.filename} (${id})`);
       existingById.delete(id);
       removed++;
     }
@@ -250,33 +278,37 @@ async function main() {
 
   await fs.mkdir(GALLERY_DIR, { recursive: true });
 
-  for (const entry of imageEntries) {
-    const { id, displayUrl, caption, alt, filename, instagramUrl, timestamp } = entry;
-    const parsed = { id, caption, alt, filename, instagramUrl, timestamp };
+  for (const entry of entries) {
+    const { id, displayUrl, videoUrl, caption, alt, filename, type, videoFilename, instagramUrl, timestamp } = entry;
+    const parsed = { id, caption, alt, filename, type, instagramUrl, timestamp };
+    if (videoFilename) parsed.videoFilename = videoFilename;
 
     if (existingById.has(id)) {
       const old = existingById.get(id);
       if (old.caption !== caption) {
         if (old.filename !== filename) {
-          const oldPath = path.join(GALLERY_DIR, old.filename);
-          const newPath = path.join(GALLERY_DIR, filename);
-          try {
-            await fs.rename(oldPath, newPath);
-          } catch (e) {
-            if (e.code !== 'ENOENT') console.warn(`Could not rename ${old.filename}: ${e.message}`);
-          }
+          try { await fs.rename(path.join(GALLERY_DIR, old.filename), path.join(GALLERY_DIR, filename)); }
+          catch (e) { if (e.code !== 'ENOENT') console.warn(`Could not rename ${old.filename}: ${e.message}`); }
         }
+        if (old.videoFilename && videoFilename && old.videoFilename !== videoFilename) {
+          try { await fs.rename(path.join(GALLERY_DIR, old.videoFilename), path.join(GALLERY_DIR, videoFilename)); }
+          catch (e) { if (e.code !== 'ENOENT') console.warn(`Could not rename ${old.videoFilename}: ${e.message}`); }
+        }
+        console.log(`  ~ Updated: ${filename} (${id})`);
         existingById.set(id, parsed);
         updated++;
       }
     } else {
-      const destPath = path.join(GALLERY_DIR, filename);
       try {
-        await downloadImage(displayUrl, destPath);
+        await downloadImage(displayUrl, path.join(GALLERY_DIR, filename));
+        if (type === 'video' && videoUrl && videoFilename) {
+          await downloadVideo(videoUrl, path.join(GALLERY_DIR, videoFilename));
+        }
+        console.log(`  + Added: ${filename} (${id})${type === 'video' ? ' [video]' : ''}`);
         existingById.set(id, parsed);
         added++;
       } catch (err) {
-        console.warn(`Failed to download image for ${id}: ${err.message}. Skipping.`);
+        console.warn(`  ! Failed to download ${id}: ${err.message}. Skipping.`);
       }
     }
   }
