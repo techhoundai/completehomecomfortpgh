@@ -215,7 +215,7 @@ async function main() {
     const parsed = {
       id: review.review_id,
       authorName: review.author_title,
-      text: review.review_text,
+      text: review.review_text.replace(/<br\s*\/?>/gi, '\n'),
       publishTime: new Date(review.review_datetime_utc).toISOString()
     };
 
