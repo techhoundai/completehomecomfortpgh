@@ -22,8 +22,7 @@ jobs:
 
       - name: Fetch and merge reviews
         env:
-          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          GOOGLE_PLACE_ID: ${{ vars.GOOGLE_PLACE_ID }}
+          OUTSCRAPER_API_KEY: ${{ secrets.OUTSCRAPER_API_KEY }}
           BOTHOUND_WEBHOOK_SECRET: ${{ secrets.BOTHOUND_WEBHOOK_SECRET }}
         run: node scripts/fetch-reviews.js
 

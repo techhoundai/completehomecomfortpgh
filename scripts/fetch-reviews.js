@@ -2,8 +2,11 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const MAX_REVIEWS = 50;
+const POLL_INTERVAL_MS = 3000;
+const POLL_TIMEOUT_MS = 120000;
 const DATA_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
 const WEBHOOK_URL = 'https://bothound-api-908333870065.us-central1.run.app/v1/webhooks/e1102ea3-c994-437d-a6d5-062988c0a743';
+const PLACE_ID = 'ChIJqfSVYcWmpIgRsH-2dlL5BB0';
 
 async function notifyError(step, message, details = {}) {
   console.error(`[${step}] ${message}`);
@@ -55,16 +58,15 @@ async function fail(step, message, details = {}) {
   process.exit(1);
 }
 
-async function main() {
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID;
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-  if (!apiKey || !placeId) {
-    const missing = [
-      !apiKey && 'GOOGLE_PLACES_API_KEY',
-      !placeId && 'GOOGLE_PLACE_ID'
-    ].filter(Boolean);
-    await fail('validate_env', `Missing required environment variables: ${missing.join(', ')}`);
+async function main() {
+  const apiKey = process.env.OUTSCRAPER_API_KEY;
+
+  if (!apiKey) {
+    await fail('validate_env', 'Missing required environment variable: OUTSCRAPER_API_KEY');
   }
 
   let existing = { reviews: [] };
@@ -82,29 +84,30 @@ async function main() {
     }
   }
 
+  const params = new URLSearchParams({
+    query: PLACE_ID,
+    reviewsLimit: '500',
+    sort: 'newest'
+  });
+
   let response;
   try {
-    response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
-      headers: {
-        'X-Goog-Api-Key': apiKey,
-        'X-Goog-FieldMask': 'reviews'
-      }
+    response = await fetch(`https://api.app.outscraper.com/maps/reviews-v3?${params}`, {
+      headers: { 'X-API-KEY': apiKey }
     });
   } catch (err) {
-    await fail('api_request', 'Network error calling Google Places API', {
+    await fail('api_request', 'Network error calling Outscraper API', {
       error: err.message,
       cause: err.cause?.message || err.cause?.code || String(err.cause || ''),
-      stack: err.stack,
-      placeId
+      stack: err.stack
     });
   }
 
   if (!response.ok) {
     const body = await response.text().catch(() => '(could not read response body)');
-    await fail('api_response', `Google Places API returned HTTP ${response.status}`, {
+    await fail('api_response', `Outscraper API returned HTTP ${response.status}`, {
       statusCode: response.status,
-      responseBody: body.slice(0, 2000),
-      placeId
+      responseBody: body.slice(0, 2000)
     });
   }
 
@@ -112,73 +115,132 @@ async function main() {
   try {
     data = await response.json();
   } catch (err) {
-    await fail('parse_response', 'Failed to parse API response as JSON', {
+    await fail('parse_response', 'Failed to parse initial API response as JSON', {
       error: err.message
     });
   }
 
-  if (!data.reviews || data.reviews.length === 0) {
+  if (data.status === 'Pending') {
+    const resultsUrl = data.results_location;
+    if (!resultsUrl) {
+      await fail('missing_results_url', 'API returned Pending status but no results_location', {
+        response: JSON.stringify(data).slice(0, 500)
+      });
+    }
+
+    console.log(`Request queued (${data.id}). Polling for results...`);
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < POLL_TIMEOUT_MS) {
+      await sleep(POLL_INTERVAL_MS);
+
+      let pollResponse;
+      try {
+        pollResponse = await fetch(resultsUrl, {
+          headers: { 'X-API-KEY': apiKey }
+        });
+      } catch (err) {
+        await fail('poll_request', 'Network error polling Outscraper results', {
+          error: err.message,
+          cause: err.cause?.message || err.cause?.code || String(err.cause || ''),
+          resultsUrl
+        });
+      }
+
+      if (!pollResponse.ok) {
+        const body = await pollResponse.text().catch(() => '(could not read body)');
+        await fail('poll_response', `Outscraper poll returned HTTP ${pollResponse.status}`, {
+          statusCode: pollResponse.status,
+          responseBody: body.slice(0, 2000),
+          resultsUrl
+        });
+      }
+
+      try {
+        data = await pollResponse.json();
+      } catch (err) {
+        await fail('parse_poll', 'Failed to parse poll response as JSON', {
+          error: err.message
+        });
+      }
+
+      if (data.status !== 'Pending') {
+        console.log(`Results ready after ${Math.round((Date.now() - startTime) / 1000)}s.`);
+        break;
+      }
+    }
+
+    if (data.status === 'Pending') {
+      await fail('api_timeout', `Outscraper results not ready after ${POLL_TIMEOUT_MS / 1000}s`, {
+        requestId: data.id,
+        resultsUrl
+      });
+    }
+  }
+
+  if (!data.data || data.data.length === 0 || !data.data[0].reviews_data) {
     console.warn('API returned no reviews. Existing data left unchanged.');
     process.exit(0);
   }
 
+  const reviews = data.data[0].reviews_data;
   const existingById = new Map(existing.reviews.map(r => [r.id, r]));
   let added = 0;
   let removed = 0;
 
-  for (const review of data.reviews) {
-    if (!review.authorAttribution?.displayName || !review.rating) {
+  for (const review of reviews) {
+    if (!review.author_title || review.review_rating === undefined) {
       await fail('malformed_review', 'API returned a review missing required fields', {
         review: JSON.stringify(review).slice(0, 500)
       });
     }
 
-    if (!review.name) {
-      await fail('missing_review_id', 'API returned a review without a resource name', {
-        author: review.authorAttribution.displayName
+    if (!review.review_id) {
+      await fail('missing_review_id', 'API returned a review without an ID', {
+        author: review.author_title
       });
     }
 
-    if (!review.text?.text) {
+    if (!review.review_text) {
       await fail('missing_review_text', 'API returned a review without text content', {
-        author: review.authorAttribution.displayName,
-        id: review.name
+        author: review.author_title,
+        id: review.review_id
       });
     }
 
-    if (!review.publishTime) {
-      await fail('missing_publish_time', 'API returned a review without a publish time', {
-        author: review.authorAttribution.displayName,
-        id: review.name
+    if (!review.review_datetime_utc) {
+      await fail('missing_publish_time', 'API returned a review without a timestamp', {
+        author: review.author_title,
+        id: review.review_id
       });
     }
 
     const parsed = {
-      id: review.name,
-      authorName: review.authorAttribution.displayName,
-      text: review.text.text,
-      publishTime: review.publishTime
+      id: review.review_id,
+      authorName: review.author_title,
+      text: review.review_text,
+      publishTime: new Date(review.review_datetime_utc).toISOString()
     };
 
-    if (review.rating < 5) {
-      if (existingById.has(review.name)) {
-        existingById.delete(review.name);
+    if (review.review_rating < 5) {
+      if (existingById.has(review.review_id)) {
+        existingById.delete(review.review_id);
         removed++;
       }
       continue;
     }
 
-    if (existingById.has(review.name)) {
-      existingById.set(review.name, parsed);
+    if (existingById.has(review.review_id)) {
+      existingById.set(review.review_id, parsed);
     } else {
-      existingById.set(review.name, parsed);
+      existingById.set(review.review_id, parsed);
       added++;
     }
   }
 
-  const reviews = Array.from(existingById.values());
-  reviews.sort((a, b) => b.publishTime.localeCompare(a.publishTime));
-  const capped = reviews.slice(0, MAX_REVIEWS);
+  const merged = Array.from(existingById.values());
+  merged.sort((a, b) => b.publishTime.localeCompare(a.publishTime));
+  const capped = merged.slice(0, MAX_REVIEWS);
 
   if (JSON.stringify(existing.reviews) === JSON.stringify(capped)) {
     console.log('No changes to reviews. Skipping write.');
