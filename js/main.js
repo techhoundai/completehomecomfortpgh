@@ -234,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>`;
         }).join('');
 
+        reviewsGrid.classList.add('visible');
         injectReviewSchema(data);
       })
       .catch(err => console.error('Failed to load reviews:', err));
