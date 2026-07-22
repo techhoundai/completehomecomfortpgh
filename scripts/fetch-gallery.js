@@ -5,7 +5,7 @@ const sharp = require('sharp');
 const APIFY_API_URL = 'https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items';
 const IG_PROFILE_URL = 'https://www.instagram.com/complete_home_comfort_llc/';
 const FILTER_HASHTAG = 'pittsburghhvac';
-const MAX_IMAGES = 200;
+const MAX_IMAGES = 50;
 const REQUEST_TIMEOUT_MS = 300000;
 const DATA_FILE = path.join(__dirname, '..', 'data', 'gallery.json');
 const GALLERY_DIR = path.join(__dirname, '..', 'media', 'gallery');
@@ -315,6 +315,15 @@ async function main() {
 
   const merged = Array.from(existingById.values());
   merged.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+
+  const overflow = merged.splice(MAX_IMAGES);
+  for (const img of overflow) {
+    try { await fs.unlink(path.join(GALLERY_DIR, img.filename)); } catch (e) { if (e.code !== 'ENOENT') console.warn(`Could not delete ${img.filename}: ${e.message}`); }
+    if (img.videoFilename) {
+      try { await fs.unlink(path.join(GALLERY_DIR, img.videoFilename)); } catch (e) { if (e.code !== 'ENOENT') console.warn(`Could not delete ${img.videoFilename}: ${e.message}`); }
+    }
+  }
+  if (overflow.length > 0) console.log(`  - Capped: removed ${overflow.length} oldest entries (max ${MAX_IMAGES}).`);
 
   if (JSON.stringify(existing.images) === JSON.stringify(merged)) {
     console.log('No changes to gallery. Skipping write.');
