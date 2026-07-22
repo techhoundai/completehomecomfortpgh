@@ -71,19 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(el);
   });
 
-  // Lightbox
-  const lightbox = document.querySelector('.lightbox');
-  if (lightbox) {
+  // Lightbox (event delegation — works for dynamically rendered gallery items)
+  function initLightbox() {
+    const lightbox = document.querySelector('.lightbox');
+    if (!lightbox) return;
+
     const lightboxImg = lightbox.querySelector('img');
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
-    const galleryItems = document.querySelectorAll('.gallery-item');
     let currentIndex = 0;
 
+    function getGalleryItems() {
+      return document.querySelectorAll('.gallery-item');
+    }
+
     function openLightbox(index) {
+      const items = getGalleryItems();
+      if (index < 0 || index >= items.length) return;
       currentIndex = index;
-      const img = galleryItems[index].querySelector('img');
+      const img = items[index].querySelector('img');
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
       lightbox.classList.add('active');
@@ -96,16 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function navigateLightbox(direction) {
+      const items = getGalleryItems();
+      if (items.length === 0) return;
       currentIndex += direction;
-      if (currentIndex < 0) currentIndex = galleryItems.length - 1;
-      if (currentIndex >= galleryItems.length) currentIndex = 0;
-      const img = galleryItems[currentIndex].querySelector('img');
+      if (currentIndex < 0) currentIndex = items.length - 1;
+      if (currentIndex >= items.length) currentIndex = 0;
+      const img = items[currentIndex].querySelector('img');
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
     }
 
-    galleryItems.forEach((item, index) => {
-      item.addEventListener('click', () => openLightbox(index));
+    document.addEventListener('click', (e) => {
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      const items = Array.from(getGalleryItems());
+      const index = items.indexOf(item);
+      if (index !== -1) openLightbox(index);
     });
 
     closeBtn?.addEventListener('click', closeLightbox);
@@ -123,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'ArrowRight') navigateLightbox(1);
     });
 
-    // Touch swipe for lightbox
     let touchStartX = 0;
     lightbox.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
@@ -136,6 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   }
+
+  initLightbox();
 
   // Contact form (Web3Forms)
   const contactForm = document.getElementById('contact-form');
@@ -238,6 +252,44 @@ document.addEventListener('DOMContentLoaded', () => {
         injectReviewSchema(data);
       })
       .catch(err => console.error('Failed to load reviews:', err));
+  }
+
+  // Dynamic Gallery
+  function renderGallery(containerId, data, limit) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const items = limit ? data.images.slice(0, limit) : data.images;
+    if (items.length === 0) return;
+    const isSubpage = window.location.pathname.includes('/gallery');
+    const pathPrefix = isSubpage ? '../media/gallery/' : 'media/gallery/';
+
+    container.innerHTML = items.map(img => {
+      const alt = escapeHtml(img.alt || 'HVAC project');
+      return `<div class="gallery-item fade-in">
+        <img src="${pathPrefix}${escapeHtml(img.filename)}" alt="${alt}" loading="lazy">
+        <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>`;
+    }).join('');
+
+    container.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    container.classList.add('visible');
+  }
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  const homeGalleryGrid = document.getElementById('home-gallery-grid');
+
+  if (galleryGrid || homeGalleryGrid) {
+    fetch('/data/gallery.json')
+      .then(res => {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
+      .then(data => {
+        if (!data.images || data.images.length === 0) return;
+        if (galleryGrid) renderGallery('gallery-grid', data, null);
+        if (homeGalleryGrid) renderGallery('home-gallery-grid', data, 6);
+      })
+      .catch(err => console.error('Failed to load gallery:', err));
   }
 
   function injectReviewSchema(data) {

@@ -18,6 +18,7 @@
   <meta name="twitter:description" content="Browse our HVAC project gallery showcasing furnace installations, AC units, ductless mini-splits, and more in Pittsburgh homes. Call (412) 757-2301.">
   <meta name="twitter:image" content="https://completehomecomfortpgh.com/media/logo.png">
   <link rel="icon" type="image/png" href="../media/logo.png">
+  <link rel="preload" href="/data/gallery.json" as="fetch" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../css/styles.css">
   <script type="application/ld+json">
@@ -26,29 +27,15 @@
   "@graph": [
     { "@type": ["Organization", "HVACBusiness"], "@id": "https://completehomecomfortpgh.com/#organization", "name": "Complete Home Comfort LLC", "url": "https://completehomecomfortpgh.com", "logo": "https://completehomecomfortpgh.com/media/logo.png", "image": "https://completehomecomfortpgh.com/media/logo.png", "telephone": "(412) 757-2301", "email": "completehomecomforthvac@gmail.com", "address": { "@type": "PostalAddress", "addressLocality": "Pittsburgh", "addressRegion": "PA", "addressCountry": "US" }, "areaServed": { "@type": "City", "name": "Pittsburgh", "addressRegion": "PA" }, "openingHours": "Mo-Fr 08:00-17:00", "sameAs": ["https://www.facebook.com/p/Complete-Home-Comfort-100064112801246/", "https://www.instagram.com/complete_home_comfort_llc", "https://www.yelp.com/biz/complete-home-comfort-pittsburgh"], "founder": { "@type": "Person", "name": "Ethan Bailey", "jobTitle": "Owner" }, "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": "Home Improvement Contractor License", "recognizedBy": { "@type": "State", "name": "Pennsylvania" }, "identifier": "PA164565" } },
     { "@type": "WebSite", "@id": "https://completehomecomfortpgh.com/#website", "url": "https://completehomecomfortpgh.com", "name": "Complete Home Comfort", "publisher": { "@id": "https://completehomecomfortpgh.com/#organization" } },
-    {
-      "@type": "ImageGallery",
-      "name": "HVAC Project Gallery",
-      "description": "Browse recent HVAC installations and projects by Complete Home Comfort in Pittsburgh, PA.",
-      "url": "https://completehomecomfortpgh.com/gallery/",
-      "publisher": { "@id": "https://completehomecomfortpgh.com/#organization" },
-      "image": [
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-1.png", "name": "Furnace installation in Pittsburgh home" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-2.png", "name": "Ductless mini-split outdoor unit installation" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-3.png", "name": "Furnace with ductwork installation" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-4.png", "name": "Ductless outdoor unit mounted on brick wall" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-5.png", "name": "Ductless mini-split outdoor unit" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-6.png", "name": "Armstrong Air condenser unit installation" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-7.png", "name": "Ductless outdoor unit residential installation" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-8.png", "name": "Complete furnace installation project" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-9.png", "name": "Furnace installation with smart thermostat" },
-        { "@type": "ImageObject", "contentUrl": "https://completehomecomfortpgh.com/media/gallery/project-10.png", "name": "Boiler and water heater system with copper piping" }
-      ]
-    },
     { "@type": "BreadcrumbList", "itemListElement": [{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://completehomecomfortpgh.com/" }, { "@type": "ListItem", "position": 2, "name": "Gallery", "item": "https://completehomecomfortpgh.com/gallery/" }] }
   ]
 }
 </script>
+<!-- gallery-schema:start -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ImageGallery","name":"HVAC Project Gallery","description":"Browse recent HVAC installations and projects by Complete Home Comfort in Pittsburgh, PA.","url":"https://completehomecomfortpgh.com/gallery/","publisher":{"@id":"https://completehomecomfortpgh.com/#organization"},"image":[]}
+</script>
+<!-- gallery-schema:end -->
 </head>
 <body>
   <div class="top-bar">
@@ -118,48 +105,7 @@
 
     <section class="section">
       <div class="container">
-        <div class="gallery-grid gallery-grid-full fade-in">
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-1.png" alt="Furnace installation in Pittsburgh home" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-2.png" alt="Ductless mini-split outdoor unit installation" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-3.png" alt="Furnace with ductwork installation" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-4.png" alt="Ductless outdoor unit mounted on brick wall" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-5.png" alt="Ductless mini-split outdoor unit" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-6.png" alt="Armstrong Air condenser unit installation" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-7.png" alt="Ductless outdoor unit residential installation" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-8.png" alt="Complete furnace installation project" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-9.png" alt="Furnace installation with smart thermostat" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="../media/gallery/project-10.png" alt="Boiler and water heater system with copper piping" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-        </div>
+        <div id="gallery-grid" class="gallery-grid gallery-grid-full fade-in"></div>
       </div>
     </section>
 

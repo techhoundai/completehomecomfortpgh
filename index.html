@@ -18,6 +18,7 @@
   <meta name="twitter:image" content="https://completehomecomfortpgh.com/media/logo.png">
   <title>Complete Home Comfort | Pittsburgh HVAC Heating &amp; Cooling Services</title>
   <link rel="icon" href="media/logo.png" type="image/png">
+  <link rel="preload" href="/data/gallery.json" as="fetch" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <script type="application/ld+json">
@@ -256,32 +257,7 @@
           <span class="section-label">Our Work</span>
           <h2>Recent Projects</h2>
         </div>
-        <div class="gallery-grid fade-in">
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-1.png" alt="HVAC system installation in Pittsburgh home" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-2.png" alt="New furnace installation for residential customer" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-3.png" alt="Central air conditioning unit replacement" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-4.png" alt="Ductless mini-split system installation" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-5.png" alt="Heat pump system setup for Pittsburgh residence" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="gallery-item fade-in">
-            <img src="media/gallery/project-6.png" alt="Complete HVAC system upgrade project" loading="lazy">
-            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-          </div>
-        </div>
+        <div id="home-gallery-grid" class="gallery-grid fade-in"></div>
         <div style="text-align: center; margin-top: 2rem;">
           <a href="/gallery/" class="btn btn-primary">View All Projects</a>
         </div>
