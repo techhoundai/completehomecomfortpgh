@@ -186,6 +186,7 @@ async function main() {
   const reviews = data.data[0].reviews_data;
   const existingById = new Map(existing.reviews.map(r => [r.id, r]));
   let added = 0;
+  let updated = 0;
   let removed = 0;
 
   for (const review of reviews) {
@@ -228,6 +229,10 @@ async function main() {
     }
 
     if (existingById.has(review.review_id)) {
+      const old = existingById.get(review.review_id);
+      if (old.text !== parsed.text || old.authorName !== parsed.authorName) {
+        updated++;
+      }
       existingById.set(review.review_id, parsed);
     } else {
       existingById.set(review.review_id, parsed);
@@ -260,7 +265,7 @@ async function main() {
     });
   }
 
-  console.log(`Wrote ${capped.length} reviews (${added} new, ${removed} removed).`);
+  console.log(`Wrote ${capped.length} reviews (${added} new, ${updated} updated, ${removed} removed).`);
 }
 
 main().catch(async (err) => {
