@@ -265,6 +265,41 @@ async function main() {
     });
   }
 
+  const TESTIMONIALS_FILE = path.join(__dirname, '..', 'testimonials', 'index.html');
+  const START_MARKER = '<!-- review-schema:start -->';
+  const END_MARKER = '<!-- review-schema:end -->';
+
+  try {
+    const html = await fs.readFile(TESTIMONIALS_FILE, 'utf-8');
+    const startIdx = html.indexOf(START_MARKER);
+    const endIdx = html.indexOf(END_MARKER);
+
+    if (startIdx !== -1 && endIdx !== -1) {
+      const count = String(capped.length);
+      const schema = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'HVACBusiness',
+        '@id': 'https://completehomecomfortpgh.com/#organization',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '5.0',
+          bestRating: '5',
+          worstRating: '1',
+          ratingCount: count,
+          reviewCount: count
+        }
+      });
+      const newBlock = `${START_MARKER}\n<script type="application/ld+json">\n${schema}\n</script>\n${END_MARKER}`;
+      const updated = html.slice(0, startIdx) + newBlock + html.slice(endIdx + END_MARKER.length);
+      await fs.writeFile(TESTIMONIALS_FILE, updated);
+      console.log(`Updated static review schema (${count} reviews).`);
+    } else {
+      console.warn('Review schema markers not found in testimonials page. Skipping schema update.');
+    }
+  } catch (err) {
+    console.warn('Could not update testimonials page schema:', err.message);
+  }
+
   console.log(`Wrote ${capped.length} reviews (${added} new, ${updated} updated, ${removed} removed).`);
 }
 
