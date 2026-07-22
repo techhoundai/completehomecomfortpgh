@@ -202,10 +202,7 @@ async function main() {
     }
 
     if (!review.review_text) {
-      await fail('missing_review_text', 'API returned a review without text content', {
-        author: review.author_title,
-        id: review.review_id
-      });
+      continue;
     }
 
     if (!review.review_datetime_utc) {
