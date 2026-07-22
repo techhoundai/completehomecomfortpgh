@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: fetch-reviews
+  cancel-in-progress: true
+
 jobs:
   fetch-reviews:
     runs-on: ubuntu-latest

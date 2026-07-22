@@ -290,8 +290,8 @@ async function main() {
         }
       });
       const newBlock = `${START_MARKER}\n<script type="application/ld+json">\n${schema}\n</script>\n${END_MARKER}`;
-      const updated = html.slice(0, startIdx) + newBlock + html.slice(endIdx + END_MARKER.length);
-      await fs.writeFile(TESTIMONIALS_FILE, updated);
+      const updatedHtml = html.slice(0, startIdx) + newBlock + html.slice(endIdx + END_MARKER.length);
+      await fs.writeFile(TESTIMONIALS_FILE, updatedHtml);
       console.log(`Updated static review schema (${count} reviews).`);
     } else {
       console.warn('Review schema markers not found in testimonials page. Skipping schema update.');
