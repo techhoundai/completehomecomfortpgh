@@ -4,7 +4,7 @@ const sharp = require('sharp');
 
 const APIFY_API_URL = 'https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items';
 const IG_PROFILE_URL = 'https://www.instagram.com/complete_home_comfort_llc/';
-const FILTER_HASHTAG = 'pittsburghhvac';
+const FILTER_HASHTAG = 'chchvacwebsite';
 const MAX_IMAGES = 50;
 const REQUEST_TIMEOUT_MS = 300000;
 const DATA_FILE = path.join(__dirname, '..', 'data', 'gallery.json');

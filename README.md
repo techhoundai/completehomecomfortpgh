@@ -1,4 +1,1 @@
-# completehomecomfortpgh
-feedback
-- instagram gallery updates
-- google review testimonial updates
+# website for completehomecomfortpgh.com
