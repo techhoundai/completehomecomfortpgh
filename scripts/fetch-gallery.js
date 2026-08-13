@@ -7,9 +7,8 @@ const IG_PROFILE_URL = 'https://www.instagram.com/complete_home_comfort_llc/';
 const FILTER_HASHTAG = 'chchvacwebsite';
 const MAX_IMAGES = 50;
 const REQUEST_TIMEOUT_MS = 300000;
-const DATA_FILE = path.join(__dirname, '..', 'data', 'gallery.json');
-const GALLERY_DIR = path.join(__dirname, '..', 'media', 'gallery');
-const GALLERY_HTML = path.join(__dirname, '..', 'gallery', 'index.html');
+const DATA_FILE = path.join(__dirname, '..', 'src', 'data', 'gallery.json');
+const GALLERY_DIR = path.join(__dirname, '..', 'public', 'media', 'gallery');
 const WEBHOOK_URL = 'https://bothound-api-908333870065.us-central1.run.app/v1/webhooks/e1102ea3-c994-437d-a6d5-062988c0a743';
 
 async function notifyError(step, message, details = {}) {
@@ -344,39 +343,6 @@ async function main() {
       code: err.code,
       filePath: DATA_FILE
     });
-  }
-
-  const START_MARKER = '<!-- gallery-schema:start -->';
-  const END_MARKER = '<!-- gallery-schema:end -->';
-
-  try {
-    const html = await fs.readFile(GALLERY_HTML, 'utf-8');
-    const startIdx = html.indexOf(START_MARKER);
-    const endIdx = html.indexOf(END_MARKER);
-
-    if (startIdx !== -1 && endIdx !== -1) {
-      const schema = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'ImageGallery',
-        name: 'HVAC Project Gallery',
-        description: 'Browse recent HVAC installations and projects by Complete Home Comfort in Pittsburgh, PA.',
-        url: 'https://completehomecomfortpgh.com/gallery/',
-        publisher: { '@id': 'https://completehomecomfortpgh.com/#organization' },
-        image: merged.map(img => ({
-          '@type': 'ImageObject',
-          contentUrl: `https://completehomecomfortpgh.com/media/gallery/${img.filename}`,
-          name: img.alt
-        }))
-      });
-      const newBlock = `${START_MARKER}\n<script type="application/ld+json">\n${schema}\n</script>\n${END_MARKER}`;
-      const updatedHtml = html.slice(0, startIdx) + newBlock + html.slice(endIdx + END_MARKER.length);
-      await fs.writeFile(GALLERY_HTML, updatedHtml);
-      console.log(`Updated gallery schema (${merged.length} images).`);
-    } else {
-      console.warn('Gallery schema markers not found in gallery page. Skipping schema update.');
-    }
-  } catch (err) {
-    console.warn('Could not update gallery page schema:', err.message);
   }
 
   console.log(`Wrote ${merged.length} gallery images (${added} new, ${updated} updated, ${removed} removed).`);

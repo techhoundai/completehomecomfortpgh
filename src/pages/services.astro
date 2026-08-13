@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: "Heating Services",
+    serviceType: "Heating",
+    description: "Stay warm all winter with expert heating services. We install, repair, and maintain furnaces, heat pumps, boilers, and ductless heating systems.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/heating/`,
+  },
+  {
+    "@type": "Service",
+    name: "Cooling Services",
+    serviceType: "Cooling",
+    description: "Beat the summer heat with reliable cooling solutions. We service central air conditioning, ductless mini-splits, and heat pump systems.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/cooling/`,
+  },
+  {
+    "@type": "Service",
+    name: "HVAC Repair",
+    serviceType: "HVAC Repair",
+    description: "Fast, reliable repair for all makes and models of heating and cooling equipment.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/repair/`,
+  },
+  {
+    "@type": "Service",
+    name: "HVAC Maintenance",
+    serviceType: "HVAC Maintenance",
+    description: "Preventive maintenance keeps your HVAC system running efficiently and extends its lifespan.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/maintenance/`,
+  },
+  {
+    "@type": "Service",
+    name: "HVAC Installation",
+    serviceType: "HVAC Installation",
+    description: "Professional HVAC installation ensuring your new system is matched to your home and installed to manufacturer specifications.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/installation/`,
+  },
+  {
+    "@type": "Service",
+    name: "Water Heater Installation",
+    serviceType: "Water Heater Installation",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+  },
+  {
+    "@type": "Service",
+    name: "Water Heater Repair",
+    serviceType: "Water Heater Repair",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+  },
+];
+---
+
+<BaseLayout
+  title="HVAC Services"
+  description="Complete Home Comfort offers professional HVAC services in Pittsburgh, PA. Heating, cooling, repair, maintenance, and installation. Call (412) 757-2301."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="HVAC Services"
+    subtitle="Professional repair, maintenance, and installation for all your heating and cooling needs"
+    bgClass="bg1"
+  />
+
+  <section class="py-16 md:py-20 bg-surface">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">What We Offer</span>
+        <h2>Our HVAC Services</h2>
+        <p class="text-muted text-lg max-w-[600px] mx-auto">From emergency repairs to complete system installations, we provide comprehensive HVAC solutions for homes throughout Pittsburgh.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
+        <ServiceCard icon="fas fa-fire" iconColor="red" title="Heating" description="Stay warm all winter with expert heating services. We install, repair, and maintain furnaces, heat pumps, boilers, and ductless heating systems." link={{ text: "Learn More", href: "/heating/" }} />
+        <ServiceCard icon="fas fa-snowflake" iconColor="blue" title="Cooling" description="Beat the summer heat with reliable cooling solutions. We service central air conditioning, ductless mini-splits, and heat pump systems." link={{ text: "Learn More", href: "/cooling/" }} />
+        <ServiceCard icon="fas fa-wrench" iconColor="red" title="Repair" description="Fast, reliable repair for all makes and models of heating and cooling equipment. Our experienced technicians diagnose the problem quickly and get your system back up and running." link={{ text: "Learn More", href: "/repair/" }} />
+        <ServiceCard icon="fas fa-clipboard-check" iconColor="blue" title="Maintenance" description="Preventive maintenance keeps your HVAC system running efficiently and extends its lifespan. Regular tune-ups help prevent costly breakdowns and improve energy efficiency." link={{ text: "Learn More", href: "/maintenance/" }} />
+        <ServiceCard icon="fas fa-plus-circle" iconColor="red" title="Installation" description="Professional HVAC installation ensuring your new system is matched to your home and installed to manufacturer specifications for optimal performance and longevity." link={{ text: "Learn More", href: "/installation/" }} />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <h2>Water Heater Services</h2>
+        <p class="text-muted text-lg max-w-[600px] mx-auto">Complete Home Comfort also provides professional water heater installation and repair. Whether you need a new water heater or your current unit needs service, our team has the expertise to get the job done right.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
+        <ServiceCard icon="fas fa-plus-circle" iconColor="red" title="Water Heater Installation" description="We install traditional tank and tankless water heaters, helping you choose the right unit for your household needs and budget. Professional installation ensures safe, efficient operation from day one." link={{ text: "Get a Quote", href: "/contact/" }} />
+        <ServiceCard icon="fas fa-wrench" iconColor="blue" title="Water Heater Repair" description="No hot water? Strange noises or leaks? Our technicians diagnose and repair all types of water heaters quickly so you can get back to your daily routine with reliable hot water." link={{ text: "Schedule Repair", href: "/contact/" }} />
+      </div>
+    </div>
+  </section>
+
+  <CTABanner />
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+interface GalleryImage {
+  filename: string;
+  alt: string;
+  type?: string;
+  videoFilename?: string;
+}
+
+interface Props {
+  item: GalleryImage;
+}
+
+const { item } = Astro.props;
+const isVideo = item.type === "video" && item.videoFilename;
+---
+
+<div
+  class="gallery-item relative rounded-xl overflow-hidden cursor-pointer aspect-[4/3] group"
+  data-video={isVideo ? `/media/gallery/${item.videoFilename}` : undefined}
+>
+  <img
+    src={`/media/gallery/${item.filename}`}
+    alt={item.alt || "HVAC project"}
+    loading="lazy"
+    class="w-full h-full object-cover transition-transform duration-[400ms] group-hover:scale-105"
+  />
+  <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-[background] duration-300"></div>
+  {!isVideo && (
+    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[1]">
+      <i class="fas fa-search-plus text-white text-3xl bg-black/50 w-[50px] h-[50px] rounded-full flex items-center justify-center"></i>
+    </div>
+  )}
+  {isVideo && (
+    <div class="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none">
+      <i class="fas fa-play text-white text-[1.4rem] bg-black/55 w-[52px] h-[52px] rounded-full flex items-center justify-center pl-1 transition-transform group-hover:scale-110 group-hover:bg-black/70"></i>
+    </div>
+  )}
+</div>

@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/gallery.json media/gallery/ gallery/index.html
+          git add src/data/gallery.json public/media/gallery/
           if git diff --cached --quiet; then
             echo "No changes to gallery data. Skipping commit."
           else

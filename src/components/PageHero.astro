@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  bgClass?: string;
+}
+
+const { title, subtitle, bgClass } = Astro.props;
+
+const bgMap: Record<string, string> = {
+  "bg1": "bg-[url('/media/background1.webp')]",
+  "bg2": "bg-[url('/media/background2.webp')]",
+  "bg3": "bg-[url('/media/background3.webp')]",
+  "bg4": "bg-[url('/media/background4.webp')]",
+};
+
+const bgImage = bgClass ? bgMap[bgClass] || "" : "";
+---
+
+<section class:list={[
+  "relative text-white py-12 md:py-14 text-center overflow-hidden bg-center bg-cover bg-no-repeat",
+  bgImage || "bg-gradient-to-br from-header to-header-deep",
+]}>
+  <div class="absolute inset-0 bg-gradient-to-br from-header/85 to-header-deep/90 pointer-events-none z-0"></div>
+  <div class="w-full max-w-container mx-auto px-4 md:px-8 relative z-[1]">
+    <h1 class="text-white">{title}</h1>
+    {subtitle && <p class="text-[#BDBDBD] mt-2 text-lg mb-0">{subtitle}</p>}
+  </div>
+</section>

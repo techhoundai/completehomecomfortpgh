@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: "HVAC Financing",
+    serviceType: "Financing",
+    description: "Affordable monthly payment plans for new HVAC installations and equipment upgrades through SVC Finance. Quick approval, competitive rates, no hidden fees.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/financing/`,
+  },
+];
+---
+
+<BaseLayout
+  title="Financing"
+  description="Affordable HVAC financing options in Pittsburgh. Apply online for flexible payment plans through SVC Finance. Call Complete Home Comfort at (412) 757-2301."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="HVAC Financing Options"
+    subtitle="Affordable payment plans for your heating and cooling needs"
+    bgClass="bg3"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="max-w-[700px] mx-auto text-center fade-in">
+        <div class="bg-white border border-card-border rounded-2xl p-10 shadow-card">
+          <div class="w-[70px] h-[70px] rounded-full bg-chc-blue/10 flex items-center justify-center text-3xl text-chc-blue mx-auto mb-6">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h2>Flexible Financing Available</h2>
+          <p>We believe every homeowner deserves a comfortable home. That is why we have partnered with SVC Finance to offer affordable monthly payment plans for new HVAC installations and equipment upgrades. Get the heating and cooling system you need today without breaking the bank.</p>
+          <a href={siteConfig.svcFinanceUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">Apply for Financing</a>
+          <small class="block mt-3 text-muted">Quick and easy online application</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20 bg-surface">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <h2>Why Finance Your HVAC System?</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+        {[
+          { icon: "fas fa-calendar-check", title: "Affordable Monthly Payments", text: "Spread the cost of your new HVAC system over manageable monthly payments that fit your household budget." },
+          { icon: "fas fa-bolt", title: "Quick Approval Process", text: "Our streamlined application process means you can get approved quickly and move forward with your project without delay." },
+          { icon: "fas fa-percent", title: "Competitive Interest Rates", text: "Take advantage of competitive rates that make upgrading your home comfort system an affordable investment." },
+          { icon: "fas fa-shield-halved", title: "No Surprise Costs", text: "Clear terms and transparent pricing mean you will always know exactly what you owe with no hidden fees or unexpected charges." },
+        ].map((benefit) => (
+          <div class="flex gap-4 items-start">
+            <div class="w-[50px] h-[50px] rounded-[10px] flex items-center justify-center text-xl flex-shrink-0 bg-chc-blue/10 text-chc-blue">
+              <i class={benefit.icon}></i>
+            </div>
+            <div>
+              <h4>{benefit.title}</h4>
+              <p class="text-muted">{benefit.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <h2>How Financing Works</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
+        {[
+          { icon: "fas fa-laptop", title: "1. Apply Online", text: "Fill out the quick and easy SVC Finance application online. It only takes a few minutes to submit your information." },
+          { icon: "fas fa-check-circle", title: "2. Get Approved", text: "Receive a fast approval decision so you can move forward with your HVAC project right away." },
+          { icon: "fas fa-home", title: "3. Enjoy Comfort", text: "We install your new heating or cooling system and you enjoy total home comfort with affordable monthly payments." },
+        ].map((step) => (
+          <div class="text-center">
+            <div class="w-[60px] h-[60px] rounded-full bg-chc-blue/10 flex items-center justify-center text-2xl text-chc-blue mx-auto mb-4">
+              <i class={step.icon}></i>
+            </div>
+            <h4>{step.title}</h4>
+            <p class="text-muted">{step.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="text-center mt-8 fade-in">
+        <a href={siteConfig.svcFinanceUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener noreferrer">Apply for Financing</a>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to Upgrade Your HVAC System?"
+    description="Take advantage of our flexible financing options and get the comfort system your home deserves. Apply online or call us to learn more."
+    showFinancing={true}
+  />
+</BaseLayout>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: "HVAC Maintenance",
+    serviceType: "HVAC Maintenance",
+    description: "Preventive maintenance services including annual tune-ups, filter replacement, system inspections, efficiency optimization, safety checks, and warranty protection.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/maintenance/`,
+  },
+];
+---
+
+<BaseLayout
+  title="HVAC Maintenance Services"
+  description="Professional HVAC maintenance and tune-up services in Pittsburgh. Extend your system's life, improve efficiency, and prevent breakdowns. Call (412) 757-2301."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="HVAC Maintenance"
+    subtitle="Keep your system running at peak performance with preventive maintenance and seasonal tune-ups"
+    bgClass="bg1"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[900px] mx-auto px-4 md:px-8 fade-in">
+      <div class="bg-white border border-card-border rounded-2xl p-8 md:p-12 shadow-card-sm">
+        <div class="text-center mb-8">
+          <div class="flex justify-center mb-6">
+            <div class="w-[60px] h-[60px] rounded-full flex items-center justify-center text-2xl bg-chc-blue/10 text-chc-blue">
+              <i class="fas fa-clipboard-check"></i>
+            </div>
+          </div>
+          <h2>Preventive Maintenance Services</h2>
+          <p class="text-muted max-w-[650px] mx-auto">Preventive maintenance is the key to keeping your HVAC system running efficiently and extending its lifespan. Regular tune-ups help prevent costly breakdowns, improve energy efficiency, and ensure your equipment operates safely.</p>
+        </div>
+        <ul class="service-list grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <li>Annual tune-ups</li>
+          <li>Filter replacement</li>
+          <li>System inspections</li>
+          <li>Efficiency optimization</li>
+          <li>Safety checks</li>
+          <li>Extended equipment life</li>
+          <li>Reduced energy bills</li>
+          <li>Warranty protection</li>
+        </ul>
+        <div class="text-center mt-8">
+          <a href="/contact/" class="btn btn-primary">Schedule Maintenance</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner />
+</BaseLayout>

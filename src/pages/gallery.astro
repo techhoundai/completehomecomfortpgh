@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import GalleryGrid from "../components/GalleryGrid.astro";
+import Lightbox from "../components/Lightbox.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+import galleryData from "../data/gallery.json";
+
+const gallerySchema = {
+  "@type": "ImageGallery",
+  name: "HVAC Project Gallery",
+  description: "Browse recent HVAC installations and projects by Complete Home Comfort in Pittsburgh, PA.",
+  url: `${siteConfig.url}/gallery/`,
+  publisher: { "@id": `${siteConfig.url}/#organization` },
+  image: galleryData.images
+    .filter((img: any) => img.type !== "video")
+    .map((img: any) => ({
+      "@type": "ImageObject",
+      contentUrl: `${siteConfig.url}/media/gallery/${img.filename}`,
+      name: img.alt || "HVAC project",
+    })),
+};
+---
+
+<BaseLayout
+  title="Project Gallery"
+  description="Browse our HVAC project gallery showcasing furnace installations, AC units, ductless mini-splits, and more in Pittsburgh homes. Call (412) 757-2301."
+  jsonLd={[gallerySchema]}
+>
+  <PageHero
+    title="Our Project Gallery"
+    subtitle="See the quality of our work - browse our recent HVAC installations and projects"
+    bgClass="bg2"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <GalleryGrid fullWidth />
+    </div>
+  </section>
+
+  <CTABanner />
+  <Lightbox />
+</BaseLayout>

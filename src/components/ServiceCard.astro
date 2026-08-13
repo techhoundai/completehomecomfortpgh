@@ -1,0 +1,36 @@
+---
+interface Props {
+  icon: string;
+  iconColor?: "red" | "blue" | "gray";
+  title: string;
+  description: string;
+  link?: { text: string; href: string };
+  listItems?: string[];
+}
+
+const { icon, iconColor = "blue", title, description, link, listItems } = Astro.props;
+
+const iconBgMap = {
+  red: "bg-chc-red/10 text-chc-red",
+  blue: "bg-chc-blue/10 text-chc-blue",
+  gray: "bg-chc-gray/10 text-chc-gray-dark",
+};
+---
+
+<div class="bg-white border border-card-border rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
+  <div class:list={["w-[60px] h-[60px] rounded-xl flex items-center justify-center text-2xl mb-5", iconBgMap[iconColor]]}>
+    <i class={icon}></i>
+  </div>
+  <h3 class="mb-3">{title}</h3>
+  <p class="text-muted text-[0.95rem]">{description}</p>
+  {listItems && listItems.length > 0 && (
+    <ul class="service-list mt-4">
+      {listItems.map((item) => <li>{item}</li>)}
+    </ul>
+  )}
+  {link && (
+    <a href={link.href} class="inline-flex items-center gap-1.5 mt-4 font-semibold text-[0.95rem] text-chc-blue hover:text-chc-blue-light group">
+      {link.text} <i class="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+    </a>
+  )}
+</div>
