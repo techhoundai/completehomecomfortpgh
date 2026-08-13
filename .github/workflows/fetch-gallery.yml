@@ -42,5 +42,6 @@ jobs:
             echo "No changes to gallery data. Skipping commit."
           else
             git commit -m "Update Instagram gallery data [automated]"
+            git pull --rebase origin main
             git push
           fi
