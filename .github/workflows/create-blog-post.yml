@@ -27,6 +27,7 @@ jobs:
       - name: Create blog post file
         env:
           PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          BOTHOUND_WEBHOOK_SECRET: ${{ secrets.BOTHOUND_WEBHOOK_SECRET }}
         run: node scripts/create-blog-post.cjs
 
       - name: Commit and push
