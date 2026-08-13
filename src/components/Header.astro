@@ -1,0 +1,166 @@
+---
+import { siteConfig } from "../data/siteConfig";
+import { mainNav } from "../data/navigation";
+
+const currentPath = Astro.url.pathname.replace(/\/index\.html$/, "/").replace(/\/$/, "") || "/";
+
+function isActive(href: string): boolean {
+  const linkPath = href.split("#")[0].replace(/\/$/, "") || "/";
+  return linkPath === currentPath;
+}
+
+function hasActiveChild(children?: { href: string }[]): boolean {
+  return children?.some((c) => isActive(c.href)) ?? false;
+}
+---
+
+<header class="bg-header sticky top-0 z-[1002] shadow-header">
+  <div class="w-full max-w-container mx-auto px-4 md:px-8 flex items-center justify-between py-2 gap-3">
+    <a href="/" class="flex-shrink-0">
+      <img src="/media/logo.webp" alt="Complete Home Comfort" class="h-[50px] md:h-[55px] w-auto" />
+    </a>
+
+    <nav class="nav-menu flex flex-col fixed top-0 -right-full w-[85%] max-w-[350px] h-screen bg-header py-20 px-8 z-[1001] overflow-y-auto transition-[right] duration-[350ms] ease-in-out lg:flex lg:flex-row lg:static lg:w-auto lg:h-auto lg:bg-transparent lg:p-0 lg:gap-0 lg:overflow-visible lg:flex-1 lg:justify-center">
+      {mainNav.map((item) =>
+        item.children ? (
+          <div class="relative nav-dropdown">
+            <a
+              href={item.href}
+              class:list={[
+                "nav-dropdown-toggle text-[#E0E0E0] text-[1.05rem] lg:text-[0.85rem] xl:text-[0.9rem] font-medium py-3 lg:py-2 px-0 lg:px-2.5 xl:px-3 block lg:inline-flex border-b border-white/[0.08] lg:border-0 lg:rounded-md items-center justify-between cursor-pointer transition-colors hover:text-chc-blue-light whitespace-nowrap",
+                (isActive(item.href) || hasActiveChild(item.children)) && "text-chc-blue-light lg:bg-white/[0.08]",
+              ]}
+            >
+              {item.label} <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300"></i>
+            </a>
+            <div class="nav-dropdown-menu hidden lg:hidden lg:absolute lg:top-full lg:left-0 lg:bg-header lg:rounded-lg lg:py-2 lg:min-w-[200px] lg:shadow-dropdown lg:z-[100] pl-4 lg:pl-0">
+              {item.children.map((child) => (
+                <a
+                  href={child.href}
+                  class:list={[
+                    "text-[0.95rem] lg:text-[0.85rem] text-[#BDBDBD] py-2.5 lg:py-2.5 lg:px-5 block transition-colors hover:text-chc-blue-light lg:hover:bg-white/[0.06] lg:rounded-none",
+                    isActive(child.href) && "text-chc-blue-light",
+                  ]}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              "text-[#E0E0E0] text-[1.05rem] lg:text-[0.85rem] xl:text-[0.9rem] font-medium py-3 lg:py-2 px-0 lg:px-2.5 xl:px-3 block border-b border-white/[0.08] lg:border-0 lg:rounded-md transition-colors hover:text-chc-blue-light lg:hover:bg-white/[0.08] whitespace-nowrap",
+              isActive(item.href) && "text-chc-blue-light lg:bg-white/[0.08]",
+            ]}
+          >
+            {item.label}
+          </a>
+        )
+      )}
+    </nav>
+
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <a href={`tel:${siteConfig.phoneRaw}`}
+        class="header-phone flex items-center justify-center text-white font-semibold text-[0] w-11 h-11 rounded-full bg-white/[0.08] xl:text-[0.9rem] xl:gap-1.5 xl:w-auto xl:h-auto xl:rounded-none xl:bg-transparent whitespace-nowrap">
+        <i class="fas fa-phone text-chc-blue-light text-[1.1rem]"></i>
+        <span class="hidden xl:inline">{siteConfig.phone}</span>
+      </a>
+      <a href="/contact/" class="btn btn-primary btn-sm">Contact Us</a>
+    </div>
+
+    <div class="hamburger flex flex-col gap-[5px] cursor-pointer z-[1002] p-2 min-w-[44px] min-h-[44px] items-center justify-center lg:hidden">
+      <span class="block w-[25px] h-[3px] bg-white rounded-sm transition-all duration-300"></span>
+      <span class="block w-[25px] h-[3px] bg-white rounded-sm transition-all duration-300"></span>
+      <span class="block w-[25px] h-[3px] bg-white rounded-sm transition-all duration-300"></span>
+    </div>
+  </div>
+</header>
+<div class="nav-overlay hidden fixed inset-0 bg-black/50 z-[1000]"></div>
+
+<script>
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector(".nav-menu");
+  const navOverlay = document.querySelector(".nav-overlay");
+
+  function closeNav() {
+    hamburger?.classList.remove("active");
+    navMenu?.classList.remove("active");
+    navOverlay?.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  function openNav() {
+    hamburger?.classList.add("active");
+    navMenu?.classList.add("active");
+    navOverlay?.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  hamburger?.addEventListener("click", () => {
+    navMenu?.classList.contains("active") ? closeNav() : openNav();
+  });
+
+  navOverlay?.addEventListener("click", closeNav);
+
+  document.querySelectorAll(".nav-dropdown-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", (e) => {
+      if (window.innerWidth >= 1024) return;
+      e.preventDefault();
+      const menu = toggle.nextElementSibling;
+      const isOpen = menu?.classList.contains("open");
+      document.querySelectorAll(".nav-dropdown-menu").forEach((m) => m.classList.remove("open"));
+      document.querySelectorAll(".nav-dropdown-toggle").forEach((t) => t.classList.remove("open"));
+      if (!isOpen) {
+        menu?.classList.add("open");
+        toggle.classList.add("open");
+      }
+    });
+  });
+
+  navMenu?.querySelectorAll("a:not(.nav-dropdown-toggle)").forEach((link) => {
+    link.addEventListener("click", closeNav);
+  });
+
+  const header = document.querySelector("header");
+  window.addEventListener("scroll", () => {
+    if (window.pageYOffset > 100) {
+      header?.classList.add("scrolled");
+    } else {
+      header?.classList.remove("scrolled");
+    }
+  }, { passive: true });
+</script>
+
+<style>
+  .nav-menu.active {
+    right: 0;
+  }
+  .nav-overlay.active {
+    display: block;
+  }
+  .nav-dropdown-menu.open {
+    display: block;
+  }
+  .nav-dropdown-toggle.open i {
+    transform: rotate(180deg);
+  }
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
+  }
+  @media (min-width: 1024px) {
+    .nav-overlay {
+      display: none !important;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu {
+      display: block;
+    }
+  }
+</style>

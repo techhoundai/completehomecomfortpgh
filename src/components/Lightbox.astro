@@ -1,0 +1,118 @@
+---
+---
+
+<div class="lightbox hidden fixed inset-0 bg-black/95 z-[9999] items-center justify-center p-4">
+  <button class="lightbox-close absolute top-4 right-4 text-white text-3xl cursor-pointer bg-white/10 w-12 h-12 rounded-full flex items-center justify-center border-none hover:bg-white/20 min-w-[44px] min-h-[44px]">
+    <i class="fas fa-times"></i>
+  </button>
+  <button class="lightbox-prev absolute top-1/2 left-4 -translate-y-1/2 text-white text-3xl cursor-pointer bg-white/10 w-[50px] h-[50px] rounded-full flex items-center justify-center border-none hover:bg-white/20 min-w-[44px] min-h-[44px]">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <button class="lightbox-next absolute top-1/2 right-4 -translate-y-1/2 text-white text-3xl cursor-pointer bg-white/10 w-[50px] h-[50px] rounded-full flex items-center justify-center border-none hover:bg-white/20 min-w-[44px] min-h-[44px]">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  <img src="" alt="" class="max-w-[90vw] max-h-[85vh] object-contain rounded-lg" />
+</div>
+
+<script>
+  const lightbox = document.querySelector(".lightbox") as HTMLDivElement | null;
+  if (lightbox) {
+    const lightboxImg = lightbox.querySelector("img") as HTMLImageElement;
+    const closeBtn = lightbox.querySelector(".lightbox-close");
+    const prevBtn = lightbox.querySelector(".lightbox-prev");
+    const nextBtn = lightbox.querySelector(".lightbox-next");
+    let lightboxVideo: HTMLVideoElement | null = null;
+    let currentIndex = 0;
+
+    function getGalleryItems() {
+      return document.querySelectorAll(".gallery-item");
+    }
+
+    function showMedia(item: Element) {
+      const videoSrc = (item as HTMLElement).dataset.video;
+      if (videoSrc) {
+        lightboxImg.style.display = "none";
+        if (!lightboxVideo) {
+          lightboxVideo = document.createElement("video");
+          lightboxVideo.controls = true;
+          lightboxVideo.playsInline = true;
+          lightboxVideo.className = "max-w-[90vw] max-h-[85vh] object-contain rounded-lg";
+          lightboxImg.parentNode!.insertBefore(lightboxVideo, lightboxImg);
+        }
+        lightboxVideo.src = videoSrc;
+        lightboxVideo.style.display = "";
+        lightboxVideo.play().catch(() => {});
+      } else {
+        if (lightboxVideo) {
+          lightboxVideo.pause();
+          lightboxVideo.style.display = "none";
+        }
+        const img = item.querySelector("img") as HTMLImageElement;
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxImg.style.display = "";
+      }
+    }
+
+    function openLightbox(index: number) {
+      const items = getGalleryItems();
+      if (index < 0 || index >= items.length) return;
+      currentIndex = index;
+      showMedia(items[index]);
+      lightbox!.classList.remove("hidden");
+      lightbox!.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      if (lightboxVideo) lightboxVideo.pause();
+      lightbox!.classList.add("hidden");
+      lightbox!.classList.remove("flex");
+      document.body.style.overflow = "";
+    }
+
+    function navigateLightbox(direction: number) {
+      const items = getGalleryItems();
+      if (items.length === 0) return;
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = items.length - 1;
+      if (currentIndex >= items.length) currentIndex = 0;
+      showMedia(items[currentIndex]);
+    }
+
+    document.addEventListener("click", (e) => {
+      const item = (e.target as HTMLElement).closest(".gallery-item");
+      if (!item) return;
+      const items = Array.from(getGalleryItems());
+      const index = items.indexOf(item);
+      if (index !== -1) openLightbox(index);
+    });
+
+    closeBtn?.addEventListener("click", closeLightbox);
+    prevBtn?.addEventListener("click", () => navigateLightbox(-1));
+    nextBtn?.addEventListener("click", () => navigateLightbox(1));
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (lightbox!.classList.contains("hidden")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") navigateLightbox(-1);
+      if (e.key === "ArrowRight") navigateLightbox(1);
+    });
+
+    let touchStartX = 0;
+    lightbox.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener("touchend", (e) => {
+      const diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 50) {
+        navigateLightbox(diff > 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+</script>

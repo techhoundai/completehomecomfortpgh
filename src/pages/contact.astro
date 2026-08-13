@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactForm from "../components/ContactForm.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "ContactPage",
+    name: "Contact Complete Home Comfort",
+    url: `${siteConfig.url}/contact/`,
+    mainEntity: { "@id": `${siteConfig.url}/#organization` },
+  },
+];
+---
+
+<BaseLayout
+  title="Contact Us"
+  description="Contact Complete Home Comfort for HVAC service in Pittsburgh, PA. Call (412) 757-2301 or submit our online form for a free consultation."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="Contact Us"
+    subtitle="We'd love to hear from you. Reach out to schedule service or ask a question."
+    bgClass="bg4"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in">
+        <div>
+          <ContactForm />
+        </div>
+        <div>
+          <div class="bg-white border border-card-border rounded-xl p-8">
+            <h3>Get in Touch</h3>
+            <div class="flex gap-4 items-start mb-6">
+              <i class="fas fa-map-marker-alt text-chc-blue text-xl mt-0.5 w-6 text-center flex-shrink-0"></i>
+              <div>
+                <h4 class="text-[0.95rem] mb-1">Address</h4>
+                <p class="mb-0 text-sm text-muted">Pittsburgh, PA (address coming soon)</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start mb-6">
+              <i class="fas fa-phone text-chc-blue text-xl mt-0.5 w-6 text-center flex-shrink-0"></i>
+              <div>
+                <h4 class="text-[0.95rem] mb-1">Phone</h4>
+                <p class="mb-0 text-sm"><a href={`tel:${siteConfig.phoneRaw}`} class="text-body font-medium hover:text-chc-blue">{siteConfig.phone}</a></p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start mb-6">
+              <i class="fas fa-envelope text-chc-blue text-xl mt-0.5 w-6 text-center flex-shrink-0"></i>
+              <div>
+                <h4 class="text-[0.95rem] mb-1">Email</h4>
+                <p class="mb-0 text-sm"><a href={`mailto:${siteConfig.email}`} class="text-body font-medium hover:text-chc-blue">{siteConfig.email}</a></p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start">
+              <i class="fas fa-clock text-chc-blue text-xl mt-0.5 w-6 text-center flex-shrink-0"></i>
+              <div>
+                <h4 class="text-[0.95rem] mb-1">Hours</h4>
+                <p class="mb-0 text-sm text-muted">{siteConfig.hoursDisplay.weekday}</p>
+                <p class="mb-0 text-sm text-muted">{siteConfig.hoursDisplay.weekend}</p>
+              </div>
+            </div>
+            <div class="flex gap-3 mt-6 pt-6 border-t border-divider">
+              <a href={siteConfig.socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-11 h-11 rounded-full bg-surface flex items-center justify-center text-muted text-lg hover:bg-chc-blue hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+              <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-11 h-11 rounded-full bg-surface flex items-center justify-center text-muted text-lg hover:bg-chc-blue hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+              <a href={siteConfig.socials.yelp} target="_blank" rel="noopener noreferrer" aria-label="Yelp" class="w-11 h-11 rounded-full bg-surface flex items-center justify-center text-muted text-lg hover:bg-chc-blue hover:text-white transition-all"><i class="fab fa-yelp"></i></a>
+            </div>
+          </div>
+          <div class="mt-6 rounded-xl overflow-hidden border border-card-border">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d48520.89!2d-79.9959!3d40.4406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Complete Home Comfort service area - Pittsburgh, PA" class="w-full h-[250px] border-none"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Need Emergency HVAC Service?"
+    description="Call us now and we'll get your home comfortable again."
+    showFinancing={false}
+  />
+</BaseLayout>

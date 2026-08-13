@@ -1,0 +1,76 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+import { siteConfig } from "../data/siteConfig";
+
+const { title, description, image } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
+const ogImage = image || `${siteConfig.url}/media/logo.png`;
+const fullTitle =
+  Astro.url.pathname === "/"
+    ? `${siteConfig.name} | Pittsburgh HVAC Heating & Cooling Services`
+    : `${title} | ${siteConfig.name}`;
+
+const pathSegments = Astro.url.pathname
+  .split("/")
+  .filter((s) => s.length > 0);
+
+const breadcrumbNames: Record<string, string> = {
+  about: "About",
+  contact: "Contact",
+  services: "Services",
+  heating: "Heating",
+  cooling: "Cooling",
+  repair: "Repair",
+  maintenance: "Maintenance",
+  installation: "Installation",
+  financing: "Financing",
+  gallery: "Gallery",
+  testimonials: "Testimonials",
+};
+
+const breadcrumbItems =
+  pathSegments.length > 0
+    ? [
+        { name: "Home", url: `${siteConfig.url}/` },
+        ...pathSegments.map((seg, i) => ({
+          name: breadcrumbNames[seg] || seg,
+          url: `${siteConfig.url}/${pathSegments.slice(0, i + 1).join("/")}/`,
+        })),
+      ]
+    : null;
+
+const breadcrumbJsonLd = breadcrumbItems
+  ? JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbItems.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        item: item.url,
+      })),
+    })
+  : null;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+{breadcrumbJsonLd && <script type="application/ld+json" set:html={breadcrumbJsonLd} />}

@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTABanner from "../components/CTABanner.astro";
+---
+
+<BaseLayout
+  title="About Complete Home Comfort"
+  description="Learn about Complete Home Comfort LLC, Pittsburgh's trusted HVAC company. Licensed, insured, and dedicated to quality heating and cooling service."
+>
+  <PageHero
+    title="About Complete Home Comfort"
+    subtitle="Pittsburgh's trusted heating and cooling experts"
+    bgClass="bg2"
+  />
+
+  <!-- About intro -->
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-center fade-in">
+        <div>
+          <h2>Your Trusted HVAC Partner in Pittsburgh</h2>
+          <p>Complete Home Comfort LLC is a full-service HVAC company proudly serving Pittsburgh and the surrounding areas. From installations and replacements to repairs and routine maintenance, we handle every aspect of residential and commercial heating and cooling with professionalism and care.</p>
+          <blockquote class="border-l-4 border-chc-blue pl-6 italic text-lg text-heading my-6">
+            "Focused on quality HVAC systems and solutions. We take pride in our trade and stay up to date with the latest industry standards as well as trainings and new technology allowing us to best serve our clients with options that suit their needs."
+            <cite class="block not-italic text-muted text-sm mt-3">- Ethan Bailey, Owner</cite>
+          </blockquote>
+          <p>Our team is dedicated to quality workmanship on every job, big or small. We stand behind our work and are committed to making sure your heating and cooling systems run efficiently and reliably year-round. As an authorized Armstrong Air dealer, we offer premium equipment backed by industry-leading warranties.</p>
+        </div>
+        <div>
+          <div class="flex flex-wrap justify-center gap-8 items-center">
+            {[
+              { icon: "fas fa-shield-halved", label: "Licensed & Insured" },
+              { icon: "fas fa-certificate", label: "Armstrong Air Dealer" },
+              { icon: "fas fa-map-marker-alt", label: "Locally Owned" },
+            ].map((badge) => (
+              <div class="flex flex-col items-center gap-2 text-center">
+                <div class="w-[60px] h-[60px] rounded-full bg-surface flex items-center justify-center text-2xl text-chc-blue border-2 border-card-border">
+                  <i class={badge.icon}></i>
+                </div>
+                <span class="text-[0.8rem] font-semibold text-muted">{badge.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="py-16 md:py-20 bg-surface">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">Our Values</span>
+        <h2>Why Choose Complete Home Comfort?</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+        {[
+          { icon: "fas fa-shield-halved", title: "Licensed & Insured", text: "PA HIC #PA164565. We are fully licensed and insured for your peace of mind and protection." },
+          { icon: "fas fa-tools", title: "Quality Workmanship", text: "Every job is done right the first time. We take pride in delivering results that last." },
+          { icon: "fas fa-handshake", title: "Honest & Transparent", text: "No hidden fees or unnecessary upselling. We provide upfront pricing and straightforward recommendations." },
+          { icon: "fas fa-heart", title: "Customer First", text: "Your satisfaction is guaranteed. We go above and beyond to make sure you are completely comfortable." },
+          { icon: "fas fa-map-marker-alt", title: "Local Experts", text: "Born and raised in Pittsburgh. We understand the local climate and what your home needs to stay comfortable." },
+          { icon: "fas fa-certificate", title: "Armstrong Air Dealer", text: "As an authorized Armstrong Air dealer, we offer premium equipment and industry-leading warranties." },
+        ].map((value) => (
+          <div class="flex gap-4 items-start">
+            <div class="w-[50px] h-[50px] rounded-[10px] flex items-center justify-center text-xl flex-shrink-0 bg-chc-blue/10 text-chc-blue">
+              <i class={value.icon}></i>
+            </div>
+            <div>
+              <h4>{value.title}</h4>
+              <p class="text-muted">{value.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Service areas -->
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8 fade-in">
+      <div class="text-center mb-12">
+        <h2>Proudly Serving Pittsburgh and Surrounding Areas</h2>
+        <p class="text-muted text-lg max-w-[600px] mx-auto">We bring reliable HVAC service to homes and businesses across the greater Pittsburgh region.</p>
+      </div>
+      <ul class="service-list max-w-[600px] mx-auto">
+        <li>Pittsburgh</li>
+        <li>North Hills</li>
+        <li>South Hills</li>
+        <li>East Suburbs</li>
+        <li>West Suburbs</li>
+        <li>Surrounding Communities</li>
+      </ul>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to Experience Complete Home Comfort?"
+    description="Contact us today to schedule your next service appointment."
+  />
+</BaseLayout>

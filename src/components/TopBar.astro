@@ -1,0 +1,30 @@
+---
+import { siteConfig } from "../data/siteConfig";
+---
+
+<div class="hidden md:block bg-header-deep text-[#CCCCCC] text-[0.85rem] py-2">
+  <div class="w-full max-w-container mx-auto px-4 md:px-8 flex justify-between items-center">
+    <div class="flex items-center gap-6">
+      <a href={`tel:${siteConfig.phoneRaw}`} class="text-[#CCCCCC] hover:text-white transition-colors">
+        <i class="fas fa-phone mr-1.5"></i> {siteConfig.phone}
+      </a>
+      <a href={`mailto:${siteConfig.email}`} class="text-[#CCCCCC] hover:text-white transition-colors">
+        <i class="fas fa-envelope mr-1.5"></i> {siteConfig.email}
+      </a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href={siteConfig.socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+        class="text-base w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#CCCCCC] hover:bg-white/10 hover:text-white transition-all">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+        class="text-base w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#CCCCCC] hover:bg-white/10 hover:text-white transition-all">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href={siteConfig.socials.yelp} target="_blank" rel="noopener noreferrer" aria-label="Yelp"
+        class="text-base w-[30px] h-[30px] flex items-center justify-center rounded-full text-[#CCCCCC] hover:bg-white/10 hover:text-white transition-all">
+        <i class="fab fa-yelp"></i>
+      </a>
+    </div>
+  </div>
+</div>

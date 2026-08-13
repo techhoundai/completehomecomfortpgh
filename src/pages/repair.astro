@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: "HVAC Repair",
+    serviceType: "HVAC Repair",
+    description: "Fast, reliable repair for all makes and models of heating and cooling equipment. Emergency repairs, diagnostic services, furnace repair, AC repair, heat pump repair, boiler repair, and ductless system repair.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/repair/`,
+  },
+];
+---
+
+<BaseLayout
+  title="HVAC Repair Services"
+  description="Expert HVAC repair services in Pittsburgh. Fast, reliable furnace, AC, heat pump, boiler, and ductless system repair. Call (412) 757-2301 for emergency service."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="HVAC Repair"
+    subtitle="Fast, reliable repair for all makes and models of heating and cooling equipment"
+    bgClass="bg1"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[900px] mx-auto px-4 md:px-8 fade-in">
+      <div class="bg-white border border-card-border rounded-2xl p-8 md:p-12 shadow-card-sm">
+        <div class="text-center mb-8">
+          <div class="flex justify-center mb-6">
+            <div class="w-[60px] h-[60px] rounded-full flex items-center justify-center text-2xl bg-chc-red/10 text-chc-red">
+              <i class="fas fa-wrench"></i>
+            </div>
+          </div>
+          <h2>Expert HVAC Repair Services</h2>
+          <p class="text-muted max-w-[650px] mx-auto">When your heating or cooling system breaks down, you need fast and reliable service. Our experienced technicians diagnose the problem quickly and get your system back up and running so your home stays comfortable year-round.</p>
+        </div>
+        <ul class="service-list grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <li>Emergency repairs</li>
+          <li>Diagnostic services</li>
+          <li>All brands serviced</li>
+          <li>Furnace repair</li>
+          <li>AC repair</li>
+          <li>Heat pump repair</li>
+          <li>Boiler repair</li>
+          <li>Ductless system repair</li>
+        </ul>
+        <div class="text-center mt-8">
+          <a href="/contact/" class="btn btn-primary">Request Repair Service</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20 bg-surface">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center fade-in">
+        <h2>Water Heater Repair</h2>
+        <p class="text-muted text-lg max-w-[600px] mx-auto">No hot water? Strange noises or leaks? Our technicians diagnose and repair all types of water heaters quickly so you can get back to your daily routine with reliable hot water.</p>
+        <div class="mt-8">
+          <a href="/contact/" class="btn btn-primary">Schedule Repair</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner />
+</BaseLayout>

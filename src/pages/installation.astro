@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: "HVAC Installation",
+    serviceType: "HVAC Installation",
+    description: "Professional HVAC installation services including furnace, AC, heat pump, boiler, ductless mini-split, water heater, thermostat, and complete system replacements.",
+    provider: { "@id": `${siteConfig.url}/#organization` },
+    areaServed: { "@type": "City", name: "Pittsburgh", addressRegion: "PA" },
+    url: `${siteConfig.url}/installation/`,
+  },
+];
+---
+
+<BaseLayout
+  title="HVAC Installation Services"
+  description="Professional HVAC installation in Pittsburgh. Expert furnace, AC, heat pump, boiler, and ductless mini-split installation. Call (412) 757-2301."
+  jsonLd={jsonLd}
+>
+  <PageHero
+    title="HVAC Installation"
+    subtitle="Professional installation for furnaces, air conditioners, heat pumps, boilers, and more"
+    bgClass="bg1"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[900px] mx-auto px-4 md:px-8 fade-in">
+      <div class="bg-white border border-card-border rounded-2xl p-8 md:p-12 shadow-card-sm">
+        <div class="text-center mb-8">
+          <div class="flex justify-center mb-6">
+            <div class="w-[60px] h-[60px] rounded-full flex items-center justify-center text-2xl bg-chc-red/10 text-chc-red">
+              <i class="fas fa-plus-circle"></i>
+            </div>
+          </div>
+          <h2>Professional HVAC Installation</h2>
+          <p class="text-muted max-w-[650px] mx-auto">Whether you are replacing an aging system or installing brand-new equipment, proper sizing and expert installation are critical to your comfort and energy savings. We ensure your new system is matched to your home and installed to manufacturer specifications.</p>
+        </div>
+        <ul class="service-list grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <li>Furnace installation</li>
+          <li>AC installation</li>
+          <li>Heat pump installation</li>
+          <li>Boiler installation</li>
+          <li>Ductless mini-split installation</li>
+          <li>Water heater installation</li>
+          <li>Thermostat installation</li>
+          <li>Complete system replacements</li>
+        </ul>
+        <div class="text-center mt-8">
+          <a href="/contact/" class="btn btn-primary">Schedule Service</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20 bg-surface">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center fade-in">
+        <h2>Water Heater Installation</h2>
+        <p class="text-muted text-lg max-w-[600px] mx-auto">We install traditional tank and tankless water heaters, helping you choose the right unit for your household needs and budget. Professional installation ensures safe, efficient operation from day one.</p>
+        <div class="mt-8">
+          <a href="/contact/" class="btn btn-primary">Get a Quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner />
+</BaseLayout>

@@ -1,0 +1,64 @@
+---
+interface Review {
+  id: string;
+  authorName: string;
+  text: string;
+  publishTime: string;
+}
+
+interface Props {
+  review: Review;
+}
+
+const { review } = Astro.props;
+
+function getInitials(name: string): string {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function relativeTime(iso: string): string {
+  const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  const intervals: [number, string][] = [
+    [31536000, "year"],
+    [2592000, "month"],
+    [604800, "week"],
+    [86400, "day"],
+  ];
+  for (const [secs, label] of intervals) {
+    const count = Math.floor(seconds / secs);
+    if (count >= 1) return `${count} ${label}${count > 1 ? "s" : ""} ago`;
+  }
+  return "Just now";
+}
+
+const initials = getInitials(review.authorName);
+const timeAgo = review.publishTime ? relativeTime(review.publishTime) : "";
+const paragraphs = review.text.split(/\n\n+/).filter((p) => p.trim());
+---
+
+<div class="break-inside-avoid mb-6 bg-white border border-card-border rounded-2xl p-8 transition-all duration-300 hover:shadow-card-lg">
+  <div class="flex items-center gap-4 mb-4">
+    <div class="w-12 h-12 rounded-full bg-chc-red flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+      {initials}
+    </div>
+    <div>
+      <h4 class="text-base mb-0.5">{review.authorName}</h4>
+      <div class="flex items-center gap-2">
+        <div class="flex gap-0.5 text-[#FFC107] text-[0.85rem]">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        {timeAgo && <span class="text-[0.85rem] text-muted">{timeAgo}</span>}
+      </div>
+    </div>
+  </div>
+  <div class="leading-7 text-body">
+    {paragraphs.map((p) => <p>{p.trim()}</p>)}
+  </div>
+</div>

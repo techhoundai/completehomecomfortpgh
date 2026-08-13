@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/media/fonts/inter-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/media/fonts/inter-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/media/fonts/inter-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/media/fonts/inter-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/media/fonts/montserrat-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/media/fonts/montserrat-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/media/fonts/montserrat-800.woff2") format("woff2");
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: #4a4a4a;
+    background-color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", "Inter", system-ui, sans-serif;
+    color: #1a1a1a;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+  h2 {
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+  }
+  h3 {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+  }
+  h4 {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: #42a5f5;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: #64b5f6;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold text-base no-underline cursor-pointer border-none text-center;
+    padding: 0.9rem 2rem;
+    min-height: 44px;
+    min-width: 44px;
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary {
+    @apply bg-chc-red text-white;
+    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+  }
+
+  .btn-primary:hover {
+    @apply bg-chc-red-dark text-white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-white;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .btn-secondary:hover {
+    @apply text-white;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .btn-blue {
+    @apply bg-chc-blue text-white;
+    box-shadow: 0 4px 15px rgba(66, 165, 245, 0.3);
+  }
+
+  .btn-blue:hover {
+    @apply bg-chc-blue-dark text-white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66, 165, 245, 0.4);
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-chc-blue;
+    border: 2px solid #42a5f5;
+  }
+
+  .btn-outline:hover {
+    @apply bg-chc-blue text-white;
+    transform: translateY(-2px);
+  }
+
+  .btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-sm {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+  }
+
+  .service-list li {
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    position: relative;
+    color: #4a4a4a;
+  }
+
+  .service-list li::before {
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    color: #42a5f5;
+    font-size: 0.85rem;
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-in-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .fade-in-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

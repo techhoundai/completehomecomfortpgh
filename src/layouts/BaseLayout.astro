@@ -1,0 +1,110 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  jsonLd?: object[];
+}
+
+import "../styles/global.css";
+import SEO from "../components/SEO.astro";
+import TopBar from "../components/TopBar.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { siteConfig } from "../data/siteConfig";
+
+const { title, description, image, jsonLd = [] } = Astro.props;
+
+const baseJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "HVACBusiness"],
+      "@id": `${siteConfig.url}/#organization`,
+      name: siteConfig.legalName,
+      url: siteConfig.url,
+      logo: `${siteConfig.url}/media/logo.png`,
+      image: `${siteConfig.url}/media/logo.png`,
+      telephone: siteConfig.phone,
+      email: siteConfig.email,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Pittsburgh",
+        addressRegion: "PA",
+        addressCountry: "US",
+      },
+      areaServed: {
+        "@type": "City",
+        name: "Pittsburgh",
+        addressRegion: "PA",
+      },
+      openingHours: siteConfig.hours,
+      sameAs: [
+        siteConfig.socials.facebook,
+        siteConfig.socials.instagram,
+        siteConfig.socials.yelp,
+      ],
+      founder: {
+        "@type": "Person",
+        name: siteConfig.owner.name,
+        jobTitle: siteConfig.owner.title,
+      },
+      hasCredential: {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "Home Improvement Contractor License",
+        recognizedBy: { "@type": "State", name: "Pennsylvania" },
+        identifier: siteConfig.license,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.url}/#website`,
+      url: siteConfig.url,
+      name: siteConfig.name,
+      publisher: { "@id": `${siteConfig.url}/#organization` },
+    },
+    ...jsonLd,
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/media/logo.png" type="image/png" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <SEO title={title} description={description} image={image} />
+    <script type="application/ld+json" set:html={JSON.stringify(baseJsonLd)} />
+  </head>
+  <body>
+    <TopBar />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".fade-in, .fade-in-left, .fade-in-right").forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>

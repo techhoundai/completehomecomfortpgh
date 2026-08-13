@@ -1,0 +1,74 @@
+---
+import { siteConfig } from "../data/siteConfig";
+import { quickLinks, serviceLinks } from "../data/navigation";
+---
+
+<footer class="bg-footer text-[#BDBDBD] pt-14">
+  <div class="w-full max-w-container mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-8 pb-10">
+      <div>
+        <img src="/media/logo.webp" alt="Complete Home Comfort" class="h-[45px] w-auto mb-4" width="200" height="60" />
+        <p class="text-sm leading-relaxed text-[#999999]">{siteConfig.description}</p>
+        <div class="flex gap-3 mt-5">
+          <a href={siteConfig.socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+            class="w-10 h-10 min-w-[44px] min-h-[44px] rounded-full bg-white/[0.06] flex items-center justify-center text-[#999999] text-base hover:bg-chc-blue hover:text-white transition-all">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+            class="w-10 h-10 min-w-[44px] min-h-[44px] rounded-full bg-white/[0.06] flex items-center justify-center text-[#999999] text-base hover:bg-chc-blue hover:text-white transition-all">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href={siteConfig.socials.yelp} target="_blank" rel="noopener noreferrer" aria-label="Yelp"
+            class="w-10 h-10 min-w-[44px] min-h-[44px] rounded-full bg-white/[0.06] flex items-center justify-center text-[#999999] text-base hover:bg-chc-blue hover:text-white transition-all">
+            <i class="fab fa-yelp"></i>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white text-[1.05rem] mb-4 relative pb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-[3px] after:bg-chc-blue after:rounded-sm">Quick Links</h4>
+        {quickLinks.map((link) => (
+          <a href={link.href} class="block text-[#999999] text-sm py-1 hover:text-white hover:pl-1 transition-all">{link.label}</a>
+        ))}
+      </div>
+
+      <div>
+        <h4 class="text-white text-[1.05rem] mb-4 relative pb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-[3px] after:bg-chc-blue after:rounded-sm">Our Services</h4>
+        {serviceLinks.map((link) => (
+          <a href={link.href} class="block text-[#999999] text-sm py-1 hover:text-white hover:pl-1 transition-all">{link.label}</a>
+        ))}
+      </div>
+
+      <div>
+        <h4 class="text-white text-[1.05rem] mb-4 relative pb-3 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-[3px] after:bg-chc-blue after:rounded-sm">Contact Info</h4>
+        <div class="flex gap-3 items-start mb-3">
+          <i class="fas fa-map-marker-alt text-chc-blue mt-0.5 w-[18px] text-center flex-shrink-0"></i>
+          <span>{siteConfig.location}</span>
+        </div>
+        <div class="flex gap-3 items-start mb-3">
+          <i class="fas fa-phone text-chc-blue mt-0.5 w-[18px] text-center flex-shrink-0"></i>
+          <a href={`tel:${siteConfig.phoneRaw}`} class="text-[#999999] hover:text-white transition-colors">{siteConfig.phone}</a>
+        </div>
+        <div class="flex gap-3 items-start mb-3">
+          <i class="fas fa-envelope text-chc-blue mt-0.5 w-[18px] text-center flex-shrink-0"></i>
+          <a href={`mailto:${siteConfig.email}`} class="text-[#999999] hover:text-white transition-colors">{siteConfig.email}</a>
+        </div>
+        <div class="flex gap-3 items-start mb-3">
+          <i class="fas fa-clock text-chc-blue mt-0.5 w-[18px] text-center flex-shrink-0"></i>
+          <span>{siteConfig.hoursDisplay.weekday}</span>
+        </div>
+        <div class="flex gap-3 items-start">
+          <i class="fas fa-clock text-chc-blue mt-0.5 w-[18px] text-center flex-shrink-0"></i>
+          <span>{siteConfig.hoursDisplay.weekend}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/[0.08] py-5 flex flex-col md:flex-row items-center md:justify-between gap-2 text-center">
+      <p class="text-[0.8rem] text-[#666666] mb-0">&copy; {new Date().getFullYear()} {siteConfig.legalName}. All rights reserved.</p>
+      <p class="text-[0.75rem] text-[#555555] mb-0">
+        Built by <a href="https://techhound.ai" target="_blank" rel="noopener noreferrer" class="text-[#777777] hover:text-white transition-colors">TechHound.ai</a>
+      </p>
+    </div>
+  </div>
+</footer>
