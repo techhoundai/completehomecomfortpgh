@@ -27,7 +27,10 @@ export const mainNav: NavLink[] = [
   {
     label: "Resources",
     href: "#",
-    children: [{ label: "Financing", href: "/financing/" }],
+    children: [
+      { label: "Blog", href: "/blog/" },
+      { label: "Financing", href: "/financing/" },
+    ],
   },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
@@ -38,6 +41,7 @@ export const quickLinks = [
   { label: "Services", href: "/services/" },
   { label: "Gallery", href: "/gallery/" },
   { label: "Testimonials", href: "/testimonials/" },
+  { label: "Blog", href: "/blog/" },
   { label: "Financing", href: "/financing/" },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },

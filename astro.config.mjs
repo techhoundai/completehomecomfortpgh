@@ -26,6 +26,12 @@ export default defineConfig({
         } else if (url.includes("/gallery") || url.includes("/testimonials")) {
           item.priority = 0.8;
           item.changefreq = "weekly";
+        } else if (url === "https://completehomecomfortpgh.com/blog/") {
+          item.priority = 0.7;
+          item.changefreq = "weekly";
+        } else if (url.includes("/blog/")) {
+          item.priority = 0.6;
+          item.changefreq = "monthly";
         } else {
           item.priority = 0.6;
           item.changefreq = "monthly";

@@ -4,6 +4,11 @@ interface Props {
   description: string;
   image?: string;
   jsonLd?: object[];
+  type?: string;
+  article?: {
+    publishedTime?: string;
+    tags?: string[];
+  };
 }
 
 import "../styles/global.css";
@@ -13,7 +18,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { siteConfig } from "../data/siteConfig";
 
-const { title, description, image, jsonLd = [] } = Astro.props;
+const { title, description, image, jsonLd = [], type, article } = Astro.props;
 
 const baseJsonLd = {
   "@context": "https://schema.org",
@@ -76,7 +81,8 @@ const baseJsonLd = {
     <link rel="icon" href="/media/logo.png" type="image/png" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <SEO title={title} description={description} image={image} />
+    <link rel="alternate" type="application/rss+xml" title="Complete Home Comfort Blog" href="/rss.xml" />
+    <SEO title={title} description={description} image={image} type={type} article={article} />
     <script type="application/ld+json" set:html={JSON.stringify(baseJsonLd)} />
   </head>
   <body>

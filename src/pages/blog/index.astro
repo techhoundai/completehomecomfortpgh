@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import CTABanner from "../../components/CTABanner.astro";
+import { getCollection } from "astro:content";
+import { formatReadingTime } from "../../utils/readingTime";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Blog"
+  description="HVAC tips, maintenance advice, and home comfort insights for Pittsburgh homeowners from Complete Home Comfort."
+>
+  <PageHero
+    title="HVAC Tips & Insights"
+    subtitle="Expert advice for Pittsburgh homeowners on heating, cooling, and home comfort"
+    bgClass="bg2"
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      {posts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in">
+          {posts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              slug={post.id}
+              tags={post.data.tags}
+              headingLevel="h2"
+              readingTime={post.body ? formatReadingTime(post.body) : undefined}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-muted text-lg">Posts coming soon. Check back shortly.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <CTABanner
+    title="Need Help With Your HVAC System?"
+    description="Whether it is time for a replacement or you just need a tune-up, our team is here to help Pittsburgh homeowners stay comfortable year-round."
+  />
+</BaseLayout>

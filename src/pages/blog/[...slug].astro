@@ -1,0 +1,55 @@
+---
+import { getCollection, render } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getReadingTime } from "../../utils/readingTime";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, allPosts: posts },
+  }));
+}
+
+const { post, allPosts } = Astro.props;
+const { Content } = await render(post);
+
+const relatedPosts = (post.data.relatedPosts ?? [])
+  .map((slug: string) => allPosts.find((p: any) => p.id === slug))
+  .filter(Boolean);
+
+const readingTime = post.body ? getReadingTime(post.body) : undefined;
+const wordCount = post.body ? post.body.trim().split(/\s+/).length : undefined;
+---
+
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  date={post.data.date}
+  dateModified={post.data.dateModified}
+  author={post.data.author}
+  tags={post.data.tags}
+  faq={post.data.faq}
+  readingTime={readingTime}
+  wordCount={wordCount}
+>
+  <Content />
+
+  {relatedPosts.length > 0 && (
+    <aside class="mt-16 pt-12 border-t border-card-border">
+      <h2 class="text-2xl font-heading font-bold mb-8">Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {relatedPosts.map((p: any) => (
+          <BlogCard
+            title={p.data.title}
+            description={p.data.description}
+            date={p.data.date}
+            slug={p.id}
+            tags={p.data.tags}
+          />
+        ))}
+      </div>
+    </aside>
+  )}
+</BlogPost>

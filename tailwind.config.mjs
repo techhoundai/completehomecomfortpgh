@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{astro,html,js,ts}"],
+  content: ["./src/**/*.{astro,html,js,ts,md}"],
   theme: {
     extend: {
       colors: {
@@ -47,5 +47,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
