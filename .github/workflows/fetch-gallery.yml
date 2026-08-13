@@ -31,7 +31,7 @@ jobs:
         env:
           APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
           BOTHOUND_WEBHOOK_SECRET: ${{ secrets.BOTHOUND_WEBHOOK_SECRET }}
-        run: node scripts/fetch-gallery.js
+        run: node scripts/fetch-gallery.cjs
 
       - name: Commit if changed
         run: |

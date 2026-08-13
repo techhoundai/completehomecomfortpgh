@@ -28,7 +28,7 @@ jobs:
         env:
           OUTSCRAPER_API_KEY: ${{ secrets.OUTSCRAPER_API_KEY }}
           BOTHOUND_WEBHOOK_SECRET: ${{ secrets.BOTHOUND_WEBHOOK_SECRET }}
-        run: node scripts/fetch-reviews.js
+        run: node scripts/fetch-reviews.cjs
 
       - name: Commit if changed
         run: |
