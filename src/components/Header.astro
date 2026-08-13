@@ -5,6 +5,7 @@ import { mainNav } from "../data/navigation";
 const currentPath = Astro.url.pathname.replace(/\/index\.html$/, "/").replace(/\/$/, "") || "/";
 
 function isActive(href: string): boolean {
+  if (href === "#") return false;
   const linkPath = href.split("#")[0].replace(/\/$/, "") || "/";
   return linkPath === currentPath;
 }
