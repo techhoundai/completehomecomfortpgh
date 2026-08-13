@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: pages-astro-build-deployment
 
 on:
   push:
