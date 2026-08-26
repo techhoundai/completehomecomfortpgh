@@ -5,7 +5,7 @@ export const siteConfig = {
   phone: "(412) 757-2301",
   phoneRaw: "4127572301",
   email: "completehomecomforthvac@gmail.com",
-  location: "Pittsburgh, PA",
+  location: "652 Center Ave, West View, PA 15229",
   hours: "Mo-Fr 08:00-17:00",
   hoursDisplay: {
     weekday: "Mon-Fri: 8am - 5pm",
