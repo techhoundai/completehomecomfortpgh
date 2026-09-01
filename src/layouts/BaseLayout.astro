@@ -102,7 +102,7 @@ const baseJsonLd = {
     <script>
       const observerOptions = {
         threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
+        rootMargin: "50px 0px -50px 0px",
       };
 
       const observer = new IntersectionObserver((entries) => {
@@ -115,7 +115,12 @@ const baseJsonLd = {
       }, observerOptions);
 
       document.querySelectorAll(".fade-in, .fade-in-left, .fade-in-right").forEach((el) => {
-        observer.observe(el);
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add("visible");
+        } else {
+          observer.observe(el);
+        }
       });
     </script>
   </body>
