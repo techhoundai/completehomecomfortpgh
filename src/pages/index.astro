@@ -38,8 +38,8 @@ const jsonLd = [
 ---
 
 <BaseLayout
-  title="Pittsburgh HVAC Heating & Cooling Services"
-  description="Complete Home Comfort LLC provides expert HVAC heating and cooling services in Pittsburgh, PA. Installation, repair, and maintenance. Call (412) 757-2301."
+  title="Pittsburgh HVAC Heating & Cooling | Manual J Load Calculations"
+  description="Pittsburgh HVAC contractor that runs Manual J load calculations on every install, not guesswork. Heating, cooling, repair, and maintenance. Call (412) 757-2301."
   jsonLd={jsonLd}
 >
   <!-- Hero -->
@@ -54,7 +54,7 @@ const jsonLd = [
           Your Comfort Is <span class="block bg-gradient-to-br from-chc-red to-chc-blue bg-clip-text text-transparent">Our Mission</span>
         </h1>
         <p class="text-[clamp(1rem,2.5vw,1.2rem)] text-[#BDBDBD] mb-8 max-w-[600px] mx-auto">
-          From expert installations to reliable repairs and preventive maintenance, Complete Home Comfort delivers quality HVAC service you can count on throughout the Pittsburgh area.
+          Engineering-led HVAC installations backed by Manual J load calculations. Plus reliable repairs and maintenance throughout the Pittsburgh area.
         </p>
         <div class="flex flex-col gap-4 items-center">
           <a href={siteConfig.svcFinanceUrl} class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer">Apply for Financing</a>
@@ -84,8 +84,89 @@ const jsonLd = [
     </div>
   </section>
 
-  <!-- Why Choose Us -->
+  <!-- Manual J / Engineering-Led -->
   <section class="py-16 md:py-20">
+    <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+      <div class="text-center mb-12 fade-in">
+        <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">What Sets Us Apart</span>
+        <h2>Every Install Starts with the Math</h2>
+        <p class="text-muted text-lg max-w-[650px] mx-auto">Most HVAC contractors guess your system size based on square footage or "years of experience." We run a <strong class="text-heading">Manual J load calculation</strong> on every job, the industry-standard engineering method that sizes your system to your actual home.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start fade-in">
+        <!-- Left: What Manual J means -->
+        <div class="bg-white border border-card-border rounded-2xl p-8 shadow-card-sm">
+          <h3 class="mb-6 text-[1.3rem]">Why Manual J Matters</h3>
+          <div class="space-y-5">
+            {[
+              { icon: "fas fa-ruler-combined", title: "Right-Sized Equipment", text: "A system matched to your home's actual heat gain and loss, not a guess based on square footage." },
+              { icon: "fas fa-droplet", title: "Better Humidity Control", text: "An oversized system short-cycles and leaves Pittsburgh homes sticky. Proper sizing means longer run times that actually pull moisture from the air." },
+              { icon: "fas fa-bolt", title: "Lower Energy Bills", text: "Equipment that runs at the right capacity instead of constantly cycling on and off uses less energy and lasts longer." },
+              { icon: "fas fa-clipboard-check", title: "Factors We Measure", text: "Windows, insulation, attic space, duct layout, orientation, air leaks. Every detail that affects how your home gains and loses heat." },
+            ].map((item) => (
+              <div class="flex gap-4">
+                <div class="w-[44px] h-[44px] rounded-lg flex items-center justify-center text-lg shrink-0 bg-chc-blue/10 text-chc-blue">
+                  <i class={item.icon}></i>
+                </div>
+                <div>
+                  <h4 class="text-[1rem] mb-1">{item.title}</h4>
+                  <p class="text-muted text-sm mb-0">{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: Featured review + blog links -->
+        <div class="flex flex-col gap-6">
+          <div class="bg-gradient-to-br from-header-deep to-header rounded-2xl p-8 text-white">
+            <div class="flex gap-1 text-[#FFC107] text-lg mb-4">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <blockquote class="text-[1.05rem] leading-relaxed text-white/90 mb-4 italic">
+              "Ethan was outstanding. He was the <strong class="text-chc-blue-light not-italic">ONLY HVAC contractor to do a Manual J calculation.</strong> Everyone else went by rules of thumb or their 'years of experience' and they were all wrong. Ethan and his crew were prompt, neat, and meticulous throughout the install process."
+            </blockquote>
+            <div class="flex items-center gap-3">
+              <div class="w-[40px] h-[40px] rounded-full bg-chc-blue/20 flex items-center justify-center text-chc-blue-light font-bold text-sm">JL</div>
+              <div>
+                <p class="text-white font-semibold text-sm mb-0">Joseph Leibowicz</p>
+                <p class="text-white/60 text-xs mb-0">Google Review</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-card-border rounded-2xl p-6 shadow-card-sm">
+            <h4 class="text-[0.95rem] mb-4">Learn More About Proper HVAC Sizing</h4>
+            <div class="space-y-3">
+              <a href="/blog/how-to-size-an-air-conditioner-for-a-pittsburgh-home/" class="flex items-center gap-3 group text-body hover:text-chc-blue transition-colors">
+                <i class="fas fa-arrow-right text-chc-blue text-xs transition-transform group-hover:translate-x-1"></i>
+                <span class="text-sm font-medium">How to Size an AC for a Pittsburgh Home</span>
+              </a>
+              <a href="/blog/why-ac-runs-constantly-pittsburgh-home/" class="flex items-center gap-3 group text-body hover:text-chc-blue transition-colors">
+                <i class="fas fa-arrow-right text-chc-blue text-xs transition-transform group-hover:translate-x-1"></i>
+                <span class="text-sm font-medium">Why Your AC Runs Constantly</span>
+              </a>
+              <a href="/blog/heat-pumps-in-pittsburgh-winters/" class="flex items-center gap-3 group text-body hover:text-chc-blue transition-colors">
+                <i class="fas fa-arrow-right text-chc-blue text-xs transition-transform group-hover:translate-x-1"></i>
+                <span class="text-sm font-medium">Heat Pumps in Pittsburgh Winters</span>
+              </a>
+              <a href="/blog/dual-fuel-hvac-systems-pittsburgh-homes/" class="flex items-center gap-3 group text-body hover:text-chc-blue transition-colors">
+                <i class="fas fa-arrow-right text-chc-blue text-xs transition-transform group-hover:translate-x-1"></i>
+                <span class="text-sm font-medium">Dual-Fuel HVAC Systems in Pittsburgh</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="py-16 md:py-20 bg-surface">
     <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
       <div class="text-center mb-12 fade-in">
         <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">Why Choose Us</span>
@@ -93,10 +174,10 @@ const jsonLd = [
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center fade-in">
         {[
+          { icon: "fas fa-calculator", title: "Engineered Sizing", text: "Every installation starts with a Manual J load calculation, the industry standard for getting the right system, not a guess." },
           { icon: "fas fa-shield-halved", title: "Licensed & Insured", text: "Fully licensed (PA HIC #PA164565) and insured for your peace of mind on every job." },
-          { icon: "fas fa-award", title: "Quality Workmanship", text: "We take pride in every installation and repair, using top-quality equipment and proven techniques." },
           { icon: "fas fa-handshake", title: "Honest Pricing", text: "Transparent, upfront pricing with no hidden fees or surprise charges. You know what you pay before work begins." },
-          { icon: "fas fa-star", title: "Satisfaction Guaranteed", text: "Your comfort is our priority. We stand behind our work and ensure you are completely satisfied." },
+          { icon: "fas fa-award", title: "Quality Workmanship", text: "We take pride in every installation and repair, using top-quality equipment and proven techniques." },
         ].map((feature) => (
           <div class="text-center p-6">
             <div class="w-[70px] h-[70px] rounded-full flex items-center justify-center text-[1.6rem] mx-auto mb-4 bg-gradient-to-br from-chc-blue to-chc-red text-white">
@@ -111,7 +192,7 @@ const jsonLd = [
   </section>
 
   <!-- Recent Projects -->
-  <section class="py-16 md:py-20 bg-surface">
+  <section class="py-16 md:py-20">
     <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
       <div class="text-center mb-12 fade-in">
         <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">Our Work</span>
@@ -125,7 +206,7 @@ const jsonLd = [
   </section>
 
   <!-- Testimonials -->
-  <section class="py-16 md:py-20">
+  <section class="py-16 md:py-20 bg-surface">
     <div class="w-full max-w-[1200px] mx-auto px-4 md:px-8">
       <div class="text-center mb-12 fade-in">
         <span class="inline-block text-chc-blue font-semibold text-[0.85rem] uppercase tracking-wider mb-2">Testimonials</span>
