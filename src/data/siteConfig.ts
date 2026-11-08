@@ -4,7 +4,7 @@ export const siteConfig = {
   url: "https://completehomecomfortpgh.com",
   phone: "(412) 757-2301",
   phoneRaw: "4127572301",
-  email: "completehomecomforthvac@gmail.com",
+  email: "contact@completehomecomfortpgh.com",
   location: "652 Center Ave, West View, PA 15229",
   hours: "Mo-Fr 08:00-17:00",
   hoursDisplay: {
