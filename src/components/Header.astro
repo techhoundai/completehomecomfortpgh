@@ -68,7 +68,8 @@ function hasActiveChild(children?: { href: string }[]): boolean {
         <i class="fas fa-phone text-chc-blue-light text-[1.1rem]"></i>
         <span class="hidden xl:inline">{siteConfig.phone}</span>
       </a>
-      <a href="/contact/" class="btn btn-primary btn-sm">Contact Us</a>
+      <a href={siteConfig.hcpBooking.url} target="_blank" rel="noopener" class="hcp-book btn btn-blue btn-sm whitespace-nowrap">Book Now</a>
+      <a href="/contact/" class="btn btn-primary btn-sm whitespace-nowrap hidden sm:inline-flex">Contact Us</a>
     </div>
 
     <div class="hamburger flex flex-col gap-[5px] cursor-pointer z-[1002] p-2 min-w-[44px] min-h-[44px] items-center justify-center lg:hidden">
@@ -122,6 +123,14 @@ function hasActiveChild(children?: { href: string }[]): boolean {
 
   navMenu?.querySelectorAll("a:not(.nav-dropdown-toggle)").forEach((link) => {
     link.addEventListener("click", closeNav);
+  });
+
+  // Open the Housecall Pro modal if its script loaded; otherwise the link opens the booking page.
+  document.querySelector(".hcp-book")?.addEventListener("click", (e) => {
+    const widget = (window as any).HCPWidget;
+    if (!widget) return;
+    e.preventDefault();
+    widget.openModal();
   });
 
   const header = document.querySelector("header");

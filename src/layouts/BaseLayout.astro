@@ -95,6 +95,7 @@ const baseJsonLd = {
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script async src={`https://online-booking.housecallpro.com/script.js?token=${siteConfig.hcpBooking.token}&orgName=${siteConfig.hcpBooking.orgName}`}></script>
     <link rel="alternate" type="application/rss+xml" title="Complete Home Comfort Blog" href="/rss.xml" />
     <SEO title={title} description={description} image={image} type={type} article={article} />
     <script type="application/ld+json" set:html={JSON.stringify(baseJsonLd)} />

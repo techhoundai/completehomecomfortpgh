@@ -14,7 +14,7 @@ export const siteConfig = {
   license: "PA164565",
   owner: { name: "Ethan Bailey", title: "Owner" },
   description:
-    "Complete Home Comfort LLC is a trusted, locally owned HVAC company serving Pittsburgh and the surrounding area. We specialize in heating, cooling, and indoor comfort solutions.",
+    "Complete Home Comfort LLC is a trusted, locally owned HVAC company serving Pittsburgh and the surrounding area.",
   socials: {
     facebook:
       "https://www.facebook.com/p/Complete-Home-Comfort-100064112801246/",
@@ -24,6 +24,11 @@ export const siteConfig = {
   web3formsKey: "b5a82aff-37df-4eda-81cc-4a23017012d9",
   svcFinanceUrl:
     "https://apply.svcfin.com/home/dealerAuthentication?id=7400263760&key=1742219857",
+  hcpBooking: {
+    token: "38a17733887c4b3398dcd89912dc1e11",
+    orgName: "Complete-Home-Comfort",
+    url: "https://book.housecallpro.com/book/Complete-Home-Comfort/38a17733887c4b3398dcd89912dc1e11?v2=true",
+  },
   googlePlaceId: "ChIJqfSVYcWmpIgRsH-2dlL5BB0",
   googleReviewsUrl:
     "https://search.google.com/local/reviews?placeid=ChIJqfSVYcWmpIgRsH-2dlL5BB0",
